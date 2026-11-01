@@ -2,13 +2,16 @@
 
 \usepackage[a4paper, margin=2.5cm]{geometry}
 
-\usepackage{amsmath,amsthm}
+\usepackage{amsmath,amsthm, amssymb}
 \usepackage{hyperref}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{definition}{Definition}
 \newtheorem{example}{Example}
+
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\NN}{\mathbb{N}}
 
 \title{Cutting Intervals in Partially Ordered Sets}
 \author{John Lindsay Orr \and Claude}
@@ -52,10 +55,6 @@ and every decreasing set containing $A$ contains $L(A)$, $L(A)$ is the smallest
 decreasing set containing $A$. In the same way, $U(A)$ is the smallest increasing set
 containing $A$.
 
-% Claude: the original statement read "the set theoretic difference of an
-% increasing set and a decreasing set". That is false: if U is increasing and D
-% is decreasing then U \ D = U \cap (X \ D) is increasing (see the example
-% below). The corrected statement is below.
 \begin{lemma}\label{lem:interval-difference}
   Let $X$ be a partially ordered set and $I\subseteq X$. The following are equivalent:
   \begin{enumerate}
@@ -88,4 +87,80 @@ containing $A$.
   Hence $y\in U\cap L$.
 \end{proof}
 
+\begin{definition}
+  Let $I$ be an interval. We say that the decreasing set $L$ \emph{cuts} $I$
+  if both $I\cap L$ and $I\cap L^c$ are non-empty.
+\end{definition}
+
+\begin{definition}
+  Let $\I$ be a collection of intervals and $n\in\NN$. We shall say that
+  $\I$ is \emph{$n$-cuttable} if there exist $n$ decreasing sets $L_1, \ldots, L_n$
+  such that each $I\in\I$ is cut by at least one of the sets $L_i$. If $\I$ is not $n$-cuttable
+  we say that it is \emph{$n$-uncuttable}
+\end{definition}
+
+% Claude: examples of n-uncuttable collections in finite posets follow.
+Before giving examples we dispose of the trivial cases. An interval with at most one
+element can never be cut, so any collection containing such an interval is
+$n$-uncuttable for every $n$. On the other hand, every interval with at least two
+elements can be cut.
+
+\begin{lemma}\label{lem:single-cut}
+  Let $X$ be a finite partially ordered set and $I$ an interval in $X$ with at least
+  two elements. If $x$ is a minimal element of $I$, then $L(x)$ cuts $I$. Consequently
+  a collection of $N$ intervals, each with at least two elements, is $N$-cuttable.
+\end{lemma}
+
+\begin{proof}
+  If $y\in I\cap L(x)$ then $y\le x$, so $y=x$ by minimality. Hence
+  $I\cap L(x)=\{x\}$, which is non-empty, and $I\cap L(x)^c = I\setminus\{x\}$ is
+  non-empty because $|I|\ge 2$. For the second statement, choose one such set $L(x)$
+  for each interval in the collection.
+\end{proof}
+
+So the question is how many cuts a collection needs, compared with the trivial bound
+of Lemma~\ref{lem:single-cut}. From now on all intervals in our collections have at
+least two elements.
+
+\begin{example}[Chains]\label{ex:chain}
+  Let $X=\{1<2<\cdots<n+2\}$ be a chain and let $\I=\{I_1,\ldots,I_{n+1}\}$ where
+  $I_j=\{j,j+1\}$. Then $\I$ is $n$-uncuttable (and, by Lemma~\ref{lem:single-cut},
+  $(n+1)$-cuttable).
+
+  The decreasing sets of $X$ are $\emptyset$, $X$ and the initial segments
+  $\{1,\ldots,k\}$ for $1\le k\le n+1$. The sets $\emptyset$ and $X$ cut nothing, and
+  $\{1,\ldots,k\}$ cuts $\{j,j+1\}$ exactly when $j\le k<j+1$, that is, when $j=k$.
+  So each decreasing set cuts at most one member of $\I$, and $n$ decreasing sets cut
+  at most $n$ of the $n+1$ intervals.
+
+  More generally, in any finite chain, let $I_1,\ldots,I_{n+1}$ be intervals with at
+  least two elements such that $\max I_j\le\min I_{j+1}$ for each $j$ (consecutive
+  intervals may share an endpoint). The initial segment $\{x : x\le k\}$ cuts $I_j$
+  exactly when $\min I_j\le k<\max I_j$. These ranges of $k$ are pairwise disjoint,
+  so again each decreasing set cuts at most one $I_j$, and the collection is
+  $n$-uncuttable.
+\end{example}
+
+\begin{example}[Antichains]\label{ex:antichain}
+  Let $X$ be an antichain with $m$ elements, so every subset of $X$ is both decreasing
+  and an interval. Let $\I$ be the collection of all $\binom{m}{2}$ two-element
+  subsets of $X$. Then $\I$ is $n$-cuttable if and only if $m\le 2^n$. In particular,
+  with $m=2^n+1$ the collection $\I$ is $n$-uncuttable.
+
+  A decreasing set $L$ cuts $\{a,b\}$ exactly when $L$ contains one of $a,b$ but not
+  the other. Given decreasing sets $L_1,\ldots,L_n$, assign each $a\in X$ the vector
+  $v(a)=(\chi_{L_1}(a),\ldots,\chi_{L_n}(a))\in\{0,1\}^n$. Then some $L_i$ cuts
+  $\{a,b\}$ if and only if $v(a)\ne v(b)$. So $L_1,\ldots,L_n$ cut every member of
+  $\I$ if and only if $v$ is injective. This is impossible when $m>2^n$, by the
+  pigeonhole principle. When $m\le 2^n$, assign the elements of $X$ distinct vectors
+  in $\{0,1\}^n$ and let $L_i$ be the set of elements whose $i$-th coordinate is $1$.
+\end{example}
+
+The two examples behave quite differently. In Example~\ref{ex:chain} the number of
+cuts needed grows linearly with the size of the poset, while in
+Example~\ref{ex:antichain} it grows only logarithmically, even though the antichain
+collection has $\binom{m}{2}$ members. Example~\ref{ex:antichain} with $m=3$ and
+$n=1$ also shows that a collection can be $n$-uncuttable even though every pair of its
+members is $n$-cuttable. For instance, the pairs $\{a,b\}$ and $\{a,c\}$ are both cut
+by the single set $\{a\}$, yet no single decreasing set cuts all three pairs.
 \end{document}
