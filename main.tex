@@ -1,0 +1,91 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+\usepackage{amsmath,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+
+\title{Cutting Intervals in Partially Ordered Sets}
+\author{John Lindsay Orr \and Claude}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  The document explores consequences of a simple idea of cutting intervals
+  (i.e., order-convex sets).
+\end{abstract}
+
+\begin{definition}
+  Let $X$ be a partially ordered set. A subset $L$ is said to be \emph{decreasing}
+  if whenever $x\le y$ and $y\in L$, then $x$ is also in $L$. Correspondingly a subset
+  $U$ is said to be \emph{increasing} if whenever $x\le y$ and $x\in U$, then $y$ is
+  also in $U$.
+\end{definition}
+
+\begin{definition}
+  Let $X$ be a partially ordered set. A subset $I$ is said to be \emph{order convex}
+  if whenever $x\le y\le z$ and $x,z\in I$, then $y$ is also in $I$. For convenience,
+  we will refer to order convex sets as \emph{intervals}.
+\end{definition}
+
+\begin{definition}
+  Let $X$ be a partially ordered set. For $x\in X$ let
+  \[
+    L(x) = \{y\in X : y\le x\} \quad\text{and}\quad U(x) = \{y\in X : y\ge x\},
+  \]
+  and for a subset $A\subseteq X$ let
+  \[
+    L(A) = \bigcup_{a\in A} L(a) \quad\text{and}\quad U(A) = \bigcup_{a\in A} U(a).
+  \]
+\end{definition}
+
+By transitivity $L(A)$ is decreasing and $U(A)$ is increasing. Since $A\subseteq L(A)$
+and every decreasing set containing $A$ contains $L(A)$, $L(A)$ is the smallest
+decreasing set containing $A$. In the same way, $U(A)$ is the smallest increasing set
+containing $A$.
+
+% Claude: the original statement read "the set theoretic difference of an
+% increasing set and a decreasing set". That is false: if U is increasing and D
+% is decreasing then U \ D = U \cap (X \ D) is increasing (see the example
+% below). The corrected statement is below.
+\begin{lemma}\label{lem:interval-difference}
+  Let $X$ be a partially ordered set and $I\subseteq X$. The following are equivalent:
+  \begin{enumerate}
+    \item $I$ is an interval;
+    \item $I = L_1\setminus L_2$ for some decreasing sets $L_1$ and $L_2$;
+    \item $I = U_1\setminus U_2$ for some increasing sets $U_1$ and $U_2$;
+    \item $I = U\cap L$ for some increasing set $U$ and decreasing set $L$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  (1)$\Rightarrow$(2). Let $L_1 = L(I)$ and $L_2 = L(I)\setminus I$. Then $L_1$ is
+  decreasing, and since $I\subseteq L_1$ we have $L_1\setminus L_2 = I$. It remains to
+  show that $L_2$ is decreasing. Let $x\le y$ with $y\in L_2$. As $y\in L(I)$ there is
+  $z\in I$ with $y\le z$, so $x\le z$ and $x\in L(I)$. If $x$ were in $I$, then
+  $x\le y\le z$ with $x,z\in I$ would give $y\in I$ by order convexity, contradicting
+  $y\in L_2$. Hence $x\notin I$, so $x\in L_2$.
+
+  (1)$\Rightarrow$(3). Apply (1)$\Rightarrow$(2) to $I$ regarded as a subset of the
+  dual order $X^{\mathrm{op}}$. $I$ is still order convex there, and decreasing sets of
+  $X^{\mathrm{op}}$ are exactly the increasing sets of $X$. (Explicitly,
+  $U_1=U(I)$ and $U_2=U(I)\setminus I$.)
+
+  (2)$\Rightarrow$(4). The complement of a decreasing set is increasing, so
+  $L_1\setminus L_2 = (X\setminus L_2)\cap L_1$ has the required form. Similarly
+  (3)$\Rightarrow$(4), since $U_1\setminus U_2 = U_1\cap(X\setminus U_2)$.
+
+  (4)$\Rightarrow$(1). Let $x\le y\le z$ with $x,z\in U\cap L$. Since $x\in U$ and
+  $U$ is increasing, $y\in U$; since $z\in L$ and $L$ is decreasing, $y\in L$.
+  Hence $y\in U\cap L$.
+\end{proof}
+
+\end{document}
