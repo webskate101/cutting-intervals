@@ -9,6 +9,7 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{definition}{Definition}
 \newtheorem{example}{Example}
+\newtheorem{conjecture}{Conjecture}
 
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\NN}{\mathbb{N}}
@@ -25,6 +26,8 @@
   The document explores consequences of a simple idea of cutting intervals
   (i.e., order-convex sets).
 \end{abstract}
+
+\section{Cuttable and Uncuttable Families of Intervals}
 
 \begin{definition}
   Let $X$ be a partially ordered set. A subset $L$ is said to be \emph{decreasing}
@@ -221,4 +224,104 @@ by the single set $\{a\}$, yet no single decreasing set cuts all three pairs.
   The collection of all intervals with at least two elements contains the covering
   pairs, so by Example~\ref{ex:product}(a) it is $(N-1)$-uncuttable.
 \end{proof}
+
+\section{Connected Intervals}
+
+\begin{definition}
+  Let $X$ be a partially ordered set. A subset $C\subseteq X$ is said to be
+  \emph{connected} if for every $x,y\in C$ there is a finite sequence
+  $x=x_0,x_1,\ldots,x_n=y$ in $C$ such that for each $i$, either $x_i\le x_{i+1}$ or
+  $x_{i+1}\le x_i$.
+\end{definition}
+
+\begin{conjecture}
+  Let $X=[k_1]\times\cdots\times[k_d]$. There is a number $n = n(d)$ (i.e., dependent
+  on $d$ but not on the $k_i$) such that every collection of connected intervals in $X$
+  which is $n$-uncuttable contains a pairwise disjoint subcollection of intervals which
+  is $1$-uncuttable.
+\end{conjecture}
+
+
+% Claude: results on the conjecture follow.
+Note that if a collection contains an interval with fewer than two elements, then that
+interval on its own is a pairwise disjoint $1$-uncuttable subcollection. So the
+conjecture concerns collections of intervals with at least two elements. The next two
+results show that the conjecture holds for $d=1$ with $n(1)=2$, and that
+$n(2)\ge 3$ if it holds for $d=2$.
+
+\begin{theorem}\label{thm:chain-conjecture}
+  Let $X=[k]$ be a chain. Every $2$-uncuttable collection of intervals in $X$ contains
+  two disjoint intervals which together form a $1$-uncuttable collection. The number
+  $2$ cannot be replaced by $1$.
+\end{theorem}
+
+\begin{proof}
+  By the remark above we may assume every interval in the collection $\I$ has at least
+  two elements. Each interval of $X$ is of the form $\{a,a+1,\ldots,b\}$. The
+  decreasing sets of $X$ that cut anything are the initial segments
+  $L(t)=\{1,\ldots,t\}$ with $1\le t\le k-1$, and $L(t)$ cuts an interval $I$ if and
+  only if $\min I\le t<\max I$.
+
+  Let $I_1\in\I$ have $\max I_1$ as small as possible and put
+  $s=\max I_1-1$ and $t=\max I_1$. Since $L(s)$ and $L(t)$ do not
+  cut every member of $\I$, there is an $I_2\in\I$ which they do not cut. If $\min I_2\le s$,
+  then $L(s)$ cuts $I_2$, so we must have $\min I_2 > s$. But then if $\min I_2 \le t$
+  the only possibility is $\min I_2 = t$, and so $L(t)$ cuts $I_2$.
+  Thus we must have $\min I_2 > t$. But then $I_1$ and $I_2$ are disjoint, and the pair
+  $\{I_1,I_2\}$ is $1$-uncuttable.
+
+  For the last statement, take $k=3$ and $\I=\{\{1,2\},\{2,3\}\}$. Each $L(t)$ cuts
+  exactly one of these intervals, so $\I$ is $1$-uncuttable. The two intervals meet,
+  so the only pairwise disjoint subcollections are single intervals, and these are
+  $1$-cuttable by Lemma~\ref{lem:single-cut}.
+\end{proof}
+
+\begin{example}\label{ex:pentagon}
+  In dimension $2$ the number $2$ does not suffice. Let $X=[3]\times[3]$ and write
+  $ij$ for the point $(i,j)$. Let $\I$ consist of the five intervals
+  \[
+    A=\{12,13\},\quad B=\{11,12,21\},\quad C=\{21,31\},\quad D=\{31,32\},\quad
+    E=\{13,23,32,33\}.
+  \]
+  Each is order convex and connected. Consecutive members meet cyclically,
+  $A\cap B=\{12\}$, $B\cap C=\{21\}$, $C\cap D=\{31\}$, $D\cap E=\{32\}$ and
+  $E\cap A=\{13\}$, and every other pair is disjoint. We show that $\I$ is
+  $2$-uncuttable but contains no pairwise disjoint $1$-uncuttable subcollection.
+
+  \emph{Disjoint subcollections are $1$-cuttable.} Since the intersection graph of
+  $\I$ is a $5$-cycle, a pairwise disjoint subcollection has at most two members.
+  Single intervals are handled by Lemma~\ref{lem:single-cut}. The five disjoint
+  pairs are cut as follows:
+  \begin{gather*}
+    \{A,C\}:\ \{11,12,21\},\qquad
+    \{A,D\}:\ \{11,12,21,31\},\qquad
+    \{B,D\}:\ \{11,21,31\},\\
+    \{B,E\}:\ \{11,12,13\},\qquad
+    \{C,E\}:\ \{11,12,13,21\}.
+  \end{gather*}
+
+  \emph{$\I$ is $2$-uncuttable.} Let $L$ be a decreasing set. Since each
+  comparability below is strict and $L$ is decreasing, one checks that
+  \begin{itemize}
+    \item $L$ cuts $A$ iff $12\in L$ and $13\notin L$;
+    \item $L$ cuts $B$ iff $11\in L$ and not both $12,21\in L$;
+    \item $L$ cuts $C$ iff $21\in L$ and $31\notin L$;
+    \item $L$ cuts $D$ iff $31\in L$ and $32\notin L$;
+    \item $L$ cuts $E$ iff $13\in L$ or $32\in L$, and $L\ne X$.
+  \end{itemize}
+  No $L$ cuts both $C$ and $D$. Suppose $L$ cuts $C$. Then $21\in L$ and
+  $31\notin L$, so also $32\notin L$. Now
+  \begin{itemize}
+    \item cutting $A$ requires $12\in L$ and $13\notin L$;
+    \item cutting $B$ requires $12\notin L$ (as $21\in L$);
+    \item cutting $E$ requires $13\in L$ (as $32\notin L$), and hence $12\in L$.
+  \end{itemize}
+  These conditions are pairwise incompatible, so $L$ cuts at most one of $A,B,E$.
+  If instead $L$ cuts $D$, then $31\in L$, so $21\in L$, and $32\notin L$. The same
+  three conditions apply, so again $L$ cuts at most one of $A,B,E$. Hence any two
+  decreasing sets cut at most four members of $\I$.
+
+  Finally, $\I$ is $3$-cuttable: the set $\{11,12\}$ cuts $A$, the set $\{11,21\}$
+  cuts $B$ and $C$, and the set $\{11,12,13,21,31\}$ cuts $D$ and $E$.
+\end{example}
 \end{document}

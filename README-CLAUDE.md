@@ -78,18 +78,18 @@ rename the generic sets.
   interval with ≥ 2 elements is cut by `L(x)` for any minimal `x` in it. So a
   collection of `N` intervals of size ≥ 2 is always `N`-cuttable, and the real
   question is how far below `N` the number of cuts can go.
-- **Chains (Example 3):** in `1 < 2 < ... < n+2`, the `n+1` covering pairs
+- **Chains (Example 1):** in `1 < 2 < ... < n+2`, the `n+1` covering pairs
   `{j, j+1}` are `n`-uncuttable, because each initial segment cuts only one of
   them. The same holds for any `n+1` intervals in a chain that meet at most in
   shared endpoints.
-- **Antichains (Example 4):** on an `m`-element antichain, all pairs are
+- **Antichains (Example 2):** on an `m`-element antichain, all pairs are
   `n`-cuttable iff `m ≤ 2^n`. The argument encodes each point by its 0/1 membership
   in `L_1, ..., L_n` (a binary encoding with pigeonhole). This shows a collection can
   be `n`-uncuttable even though every two of its members are `n`-cuttable.
 
 **Possible questions to pursue:**
 1. *Chains:* I believe a collection in a chain is `n`-uncuttable iff it contains
-   `n+1` intervals as in Example 3. Each interval `I` gives the half-open range
+   `n+1` intervals as in Example 1. Each interval `I` gives the half-open range
    `[min I, max I)` of initial segments that cut it, and this is the Gallai
    piercing/packing duality for intervals of a line. I haven't added it to
    `main.tex` yet; shall I?
@@ -130,15 +130,15 @@ unless you confirm I can remove them.
 **Request:** we'll focus on posets that are cartesian products of chains; give an
 example of that kind.
 
-**Claude:** Appended Example 5 to the end of `main.tex`, for `X = [k_1] × ... × [k_d]`
+**Claude:** Appended Example 3 to the end of `main.tex`, for `X = [k_1] × ... × [k_d]`
 and `N = Σ (k_i − 1)`:
 - **(a)** The collection of all covering pairs `{x, x + e_i}` needs exactly `N` cuts.
   The upper bound uses the coordinate cuts `{x : x_i ≤ t}`. For the lower bound,
   take a maximal chain in `X`: a decreasing set cuts at most one of its `N`
-  consecutive pairs, which is Example 3 applied inside `X`.
+  consecutive pairs, which is Example 1 applied inside `X`.
 - **(b)** In `[m] × [m]`, the pairs from the anti-diagonal antichain need exactly
   `⌈log2 m⌉` cuts. This works because `S ↦ L(S)` lets decreasing sets pick out any
-  subset of an antichain, so Example 4 carries over.
+  subset of an antichain, so Example 2 carries over.
 
 **Follow-up (Theorem 1, appended):** the coordinate cuts handle *every*
 collection. Two distinct points differ in some coordinate, `a_i < b_i`, and then
@@ -157,3 +157,129 @@ intervals needs exactly `N` cuts.
    at collections that aren't just pairs. Is there a natural problem where it does
    matter, e.g. cuts with extra conditions, or counting how *many* times each
    interval is cut?
+
+### 2026-11-01: The conjecture on connected intervals
+
+**Request:** read the Conjecture (Section "Connected Intervals") and give thoughts.
+
+**Restatement.** Call a family *good* if every pairwise disjoint subfamily is
+1-cuttable. The conjecture says that in `[k_1] × ... × [k_d]`, every good family of
+connected intervals is `n(d)`-cuttable, with `n(d)` independent of the `k_i`. It is a
+Gallai/Helly-type statement: "packing number 1 ⇒ bounded piercing number".
+
+**Why both hypotheses are needed.**
+- *Connected:* Example 3(b). Pairs from the anti-diagonal are disconnected. Every
+  disjoint subfamily `{a_j, b_j}` is cut by `L({a_1, a_2, ...})`, yet `⌈log2 m⌉`
+  cuts are needed. So without connectivity there is no bound.
+- *Disjoint:* `{1,2}, {2,3}` in a chain is 1-uncuttable, but its only disjoint
+  subfamilies are single intervals. So we must have `n(d) ≥ 2`.
+
+**Why connectivity helps.** In a product of chains, if `x ≤ y` are both in an
+interval `I`, then the box `[x, y]` is contained in `I`, and a box is connected
+through covering pairs. So a connected interval is connected in the Hasse diagram,
+and `L` cuts `I` iff `L` cuts some covering pair inside `I`. This is where order
+convexity finally matters (Theorem 1 didn't use it).
+
+**d = 1 is true, with `n(1) = 2` sharp.** Sketch: in a chain, `{x ≤ k}` cuts `I`
+iff `k ∈ [min I, max I − 1]`. On a line, the number of points needed to hit every
+interval in a family equals the largest number of pairwise disjoint intervals in
+it (Gallai). So if a family needs 3 cuts, it contains `I_1, I_2, I_3` with
+`max I_1 ≤ min I_2` and `max I_2 ≤ min I_3`. Then `I_1, I_3` are disjoint and no
+single cut handles both. Sharpness: `{1,2}, {2,3}`.
+
+**Computer experiments** (`code/`, brute force on small products):
+- Random greedy search over maximal good families. The largest cut number found
+  is 2 for chains and `[2]×[3]`, and 3 for `[3]×[3]`, `[3]×[4]`, `[4]×[4]` and
+  `[2]^3`. So `n(2) ≥ 3`, and the data so far is consistent with a small constant.
+  The search is random, not exhaustive.
+- A 5-interval witness in `[3]×[3]` (writing `ij` for `(i,j)`):
+  `{12,13}, {11,12,21}, {21,31}, {31,32}, {13,23,32,33}`. Consecutive members
+  overlap *cyclically*, so it is a 5-cycle going round the grid. The only disjoint
+  subfamilies are pairs, each 1-cuttable, but 3 cuts are needed. It looks like the
+  odd-cycle obstruction for circular-arc families, which is new behaviour compared
+  with chains.
+- **Pairs aren't enough to test goodness.** In `[3]×[3]` the disjoint triple
+  `{12,13}, {21,31}, {23,32,33}` is 1-uncuttable although each pair in it is
+  1-cuttable. So "good" can't be checked on pairs alone, and the conjecture really
+  does need subcollections of arbitrary size.
+
+**Proposed next steps** (pending your choice):
+1. Write up `d = 1` (`n(1) = 2`) as a theorem, and the `[3]×[3]` 5-cycle as an
+   example showing `n(2) ≥ 3`.
+2. Larger or exhaustive search in `d = 2` for a good family needing 4 cuts. Longer
+   odd cycles in bigger grids are the natural candidates.
+3. Look for a proof in `d = 2`. One idea: a decreasing set in `[k]×[k]` is a
+   staircase, and a good family might be forced to lie close to a single
+   staircase, which would then let a bounded number of shifted staircases cut it.
+
+### 2026-11-01: d = 1 theorem, pentagon example, related work
+
+**(a) Added to the end of `main.tex`:**
+- **Theorem 2** (`d = 1`): in a chain, every 2-uncuttable collection contains two
+  disjoint intervals that no single set cuts together, and 2 can't be replaced by 1.
+  The proof is a greedy argument (the usual proof of Gallai's theorem for
+  intervals), written directly in terms of the cuts `L_t`.
+- **Example 4** (the "pentagon"): the 5-cycle of intervals in `[3]×[3]`, with a
+  hand proof that it is 2-uncuttable but every disjoint subcollection is
+  1-cuttable. So if `n(2)` exists, `n(2) ≥ 3`. The proof doesn't rely on the
+  computer search.
+
+**(b) Related work.** I'm citing from memory, so check the references before
+relying on them. I don't know of this exact conjecture in the literature.
+1. *Gallai-type theorems / perfect graphs:* for intervals on a line, the minimum
+   number of points hitting all intervals equals the maximum number of pairwise
+   disjoint ones. Theorem 2 is essentially this.
+2. *Piercing vs packing for "relatives of intervals":* Gyárfás & Lehel (1970s–80s)
+   on `d`-intervals and boxes. Tardos (Combinatorica 1995) showed `τ ≤ 2ν` for
+   2-intervals. Kaiser (Discrete Comput. Geom. 1997) showed `τ ≤ (d² − d)ν` for
+   `d`-intervals. These are the closest in spirit: bounds depending only on `d`,
+   with topological proofs.
+3. *Axis-parallel boxes:* boxes in the plane do *not* have `τ` bounded by a function
+   of `ν` alone. But for rectangles that all meet a fixed diagonal line, or more
+   generally a monotone curve, there are constant-factor bounds. I recall Correa,
+   Feuilloley, Pérez-Lantero & Soto (DCG ~2015) and work of Chudnovsky, Spirkl &
+   Zerbib. This seems especially relevant, because a decreasing set in `[k]×[k]`
+   is a staircase, i.e. a monotone curve. Our "cut by a staircase" is like
+   "stabbed by a monotone curve".
+4. *Hadwiger–Debrunner `(p,q)` problem / Alon–Kleitman (1992):* the general principle
+   that a local intersection condition gives bounded piercing. The pentagon and the
+   bad triple show our local condition must involve whole disjoint subcollections,
+   not just pairs, which is closer to `(p,q)` than to Helly.
+5. *Dimension theory of posets (Trotter's book, 1992):* the antichain example is the
+   statement that the *2-dimension* (Boolean dimension of the embedding into `2^n`)
+   of an `m`-antichain is `⌈log2 m⌉`. The 2-dimension of a poset is the least
+   number of decreasing sets needed to separate the non-comparable pairs, which is
+   closely related to our cut number for collections of pairs.
+6. *Abstract convexity (van de Vel, Theory of Convex Structures, 1993):* order
+   convexity is a standard convexity structure, with known Helly/Radon numbers. It
+   may be relevant to the bad triple, the failure of a pairwise reduction.
+
+I can do a literature search to confirm these references and look for anything
+closer, especially on stabbing families of connected sets by monotone curves.
+
+*(Note: example numbers in this log were corrected to match the compiled PDF: Chains = Ex. 1, Antichains = Ex. 2, Products of chains = Ex. 3, Pentagon = Ex. 4.)*
+
+### 2026-11-01: Simpler proof of Theorem 2
+
+**Change (by John):** replaced Claude's greedy proof with a direct one. Take `I_1`
+with the smallest `max`, and use the two cuts `L(max I_1 − 1)` and `L(max I_1)`.
+Anything they both miss is disjoint from `I_1` and lies entirely above it.
+
+**Claude:** The proof is correct and better than mine. It finds the disjoint pair
+directly, without going through a third interval. Suggested tightenings (not
+applied; Rule 3):
+1. *Notation:* the first paragraph and the sharpness paragraph use `L_t`, but the
+   new argument uses `L(s)`, `L(t)`. Since `L(t) = {1, ..., t}` by our Definition,
+   I suggest using `L(t)` throughout and dropping `L_t`.
+2. "Since `L(s)` and `L(t)` do not cut `I`" should be "do not cut every member of `I`".
+3. "If `min I_2 ≤ s` then `L(s)` cuts `I_2`" also uses `s < max I_1 ≤ max I_2`, by
+   the choice of `I_1`. Worth saying.
+4. "the only possibility is `min I_2 = t`, and so `L(t)` cuts `I_2`" uses
+   `max I_2 > t`, which holds because `|I_2| ≥ 2`.
+5. The final claim that `{I_1, I_2}` is 1-uncuttable needs one line: `L(u)` cuts
+   `I_1` only if `u < max I_1`, and cuts `I_2` only if `u ≥ min I_2 > max I_1`.
+6. Delete the commented-out greedy proof?
+
+**Decision (John):** apply 1, 2 and 6. Points 3–5 are obvious to the reader, so
+omit them. **Claude:** Done. `L_t` → `L(t)` throughout the proof, "cut every
+member of `I`", and the commented-out greedy proof removed. Compiles cleanly.
