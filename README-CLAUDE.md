@@ -124,3 +124,36 @@ response and then delete the comment. Two `% Claude:` comments I wrote myself ar
 still in `main.tex`: the note about the false original statement of Lemma 1 and the
 marker before the examples. They aren't requests from you, so I'll leave them
 unless you confirm I can remove them.
+
+### 2026-11-01: Example in products of chains
+
+**Request:** we'll focus on posets that are cartesian products of chains; give an
+example of that kind.
+
+**Claude:** Appended Example 5 to the end of `main.tex`, for `X = [k_1] × ... × [k_d]`
+and `N = Σ (k_i − 1)`:
+- **(a)** The collection of all covering pairs `{x, x + e_i}` needs exactly `N` cuts.
+  The upper bound uses the coordinate cuts `{x : x_i ≤ t}`. For the lower bound,
+  take a maximal chain in `X`: a decreasing set cuts at most one of its `N`
+  consecutive pairs, which is Example 3 applied inside `X`.
+- **(b)** In `[m] × [m]`, the pairs from the anti-diagonal antichain need exactly
+  `⌈log2 m⌉` cuts. This works because `S ↦ L(S)` lets decreasing sets pick out any
+  subset of an antichain, so Example 4 carries over.
+
+**Follow-up (Theorem 1, appended):** the coordinate cuts handle *every*
+collection. Two distinct points differ in some coordinate, `a_i < b_i`, and then
+`{x : x_i ≤ a_i}` separates them. So every collection of intervals of size `≥ 2`
+in `[k_1] × ... × [k_d]` is `N`-cuttable, and by (a) the collection of all such
+intervals needs exactly `N` cuts.
+
+**Possible questions for products of chains:**
+1. Every collection needs at most `N` cuts, and antichain pairs need only about
+   `log2 m`. For a given collection `I`, what determines the minimum number of cuts?
+   Natural lower bounds: the number of steps in the longest "chain of covering-type
+   pairs" in `I` (as in (a)), and `log2` of the size of a "separating antichain" (as
+   in (b)). Is the minimum always within a constant factor of the larger of these?
+2. Note that Theorem 1 only uses that the intervals have at least two points, not
+   that they are convex. The convexity of `I` doesn't seem to matter until we look
+   at collections that aren't just pairs. Is there a natural problem where it does
+   matter, e.g. cuts with extra conditions, or counting how *many* times each
+   interval is cut?

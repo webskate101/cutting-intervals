@@ -163,4 +163,62 @@ collection has $\binom{m}{2}$ members. Example~\ref{ex:antichain} with $m=3$ and
 $n=1$ also shows that a collection can be $n$-uncuttable even though every pair of its
 members is $n$-cuttable. For instance, the pairs $\{a,b\}$ and $\{a,c\}$ are both cut
 by the single set $\{a\}$, yet no single decreasing set cuts all three pairs.
+
+\begin{example}[Products of chains]\label{ex:product}
+  For $k\in\NN$ write $[k]=\{1<2<\cdots<k\}$. Let $X=[k_1]\times\cdots\times[k_d]$
+  with the product order, $x\le y$ if and only if $x_i\le y_i$ for every $i$, and put
+  $N=\sum_{i=1}^d (k_i-1)$. Write $e_i$ for the $i$-th standard basis vector. In $X$,
+  $y$ covers $x$ exactly when $y=x+e_i$ for some $i$, and then $\{x,y\}$ is an interval.
+
+  \emph{(a) Covering pairs.} Let $\I$ be the collection of all covering pairs
+  $\{x,x+e_i\}$ in $X$. Then $\I$ is $N$-cuttable but $(N-1)$-uncuttable.
+
+  For the upper bound, take the $N$ decreasing sets
+  $L_{i,t}=\{x\in X : x_i\le t\}$ for $1\le i\le d$ and $1\le t\le k_i-1$. The pair
+  $\{x,x+e_i\}$ is cut by $L_{i,x_i}$.
+
+  For the lower bound, choose a maximal chain $c_0<c_1<\cdots<c_N$ in $X$, running from
+  $(1,\ldots,1)$ to $(k_1,\ldots,k_d)$ and increasing one coordinate by one at each
+  step. Each $\{c_{j-1},c_j\}$ is in $\I$. Suppose a decreasing set $L$ cuts
+  $\{c_{j-1},c_j\}$. Since $L$ is decreasing and $c_{j-1}<c_j$, this forces
+  $c_{j-1}\in L$ and $c_j\notin L$. If $L$ also cut $\{c_{l-1},c_l\}$ with $l>j$, then
+  $c_{l-1}\in L$, and since $c_j\le c_{l-1}$, also $c_j\in L$, which is a contradiction.
+  So each decreasing set cuts at most one of the $N$ pairs $\{c_{j-1},c_j\}$, and $N$
+  decreasing sets are needed. This is the argument of Example~\ref{ex:chain} applied
+  to a chain inside $X$.
+
+  \emph{(b) Pairs from an antichain.} Now let $d=2$ and $k_1=k_2=m$, and let
+  $A=\{(i,m+1-i) : 1\le i\le m\}$ be the anti-diagonal, an antichain with $m$
+  elements. Any two-element subset of an antichain is an interval. Let $\I_A$ be the
+  collection of all two-element subsets of $A$. Then $\I_A$ is $n$-cuttable if and
+  only if $m\le 2^n$.
+
+  The argument of Example~\ref{ex:antichain} applies after intersecting with $A$. If
+  $L$ is decreasing, then $L$ cuts $\{a,b\}\subseteq A$ exactly when $L\cap A$
+  contains one of $a,b$ but not the other. So, given $L_1,\ldots,L_n$, the vectors
+  $v(a)=(\chi_{L_1}(a),\ldots,\chi_{L_n}(a))$ must be distinct for $a\in A$, which
+  needs $m\le 2^n$. Conversely, every subset $S\subseteq A$ arises as $L\cap A$ for a
+  decreasing $L$, namely $L=L(S)$: if $a\in A\cap L(S)$ then $a\le s$ for some
+  $s\in S$, so $a=s$ because $A$ is an antichain. The construction of
+  Example~\ref{ex:antichain} therefore carries over.
+
+  So in the grid $[m]\times[m]$, the $2m(m-1)$ covering pairs need exactly $2m-2$
+  cuts, while the $\binom{m}{2}$ anti-diagonal pairs need only $\lceil\log_2 m\rceil$.
+\end{example}
+
+\begin{theorem}\label{prop:product-bound}
+  Let $X=[k_1]\times\cdots\times[k_d]$ and $N=\sum_{i=1}^d(k_i-1)$. Every collection of
+  intervals in $X$, each with at least two elements, is $N$-cuttable. The bound is
+  attained, so the collection of all intervals in $X$ with at least two elements is
+  $N$-cuttable but $(N-1)$-uncuttable.
+\end{theorem}
+
+\begin{proof}
+  Let $I$ be an interval with distinct elements $a,b$. Then $a_i\ne b_i$ for some $i$;
+  say $a_i<b_i$, so $a_i\le k_i-1$. The decreasing set
+  $L_{i,a_i}=\{x\in X : x_i\le a_i\}$ contains $a$ but not $b$, so it cuts $I$. Hence
+  the $N$ sets $L_{i,t}$ ($1\le i\le d$, $1\le t\le k_i-1$) cut every such interval.
+  The collection of all intervals with at least two elements contains the covering
+  pairs, so by Example~\ref{ex:product}(a) it is $(N-1)$-uncuttable.
+\end{proof}
 \end{document}
