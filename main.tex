@@ -9,6 +9,7 @@
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
 
 % 2. Definition style for definitions and examples (non-italic/upright body text)
@@ -244,22 +245,22 @@ if $x\le y$ or $y\le x$.
 Say that two subsets $A$ and $B$ of $X$ are \emph{incomparable} if there are no
 comparable elements $a\in A$ and $b\in B$.
 
-\begin{lemma}\label{lem:incomparabale-sets-separate}
+\begin{lemma}\label{lem:incomparable-sets-separate}
   Let $C$ be connected and suppose $C\subseteq A\cup B$ where
   $A$ and $B$ are incomparable sets. Then $C$ is a subset of either $A$ or $B$.
 \end{lemma}
 
 \begin{proof}
-  Suppose $a\in A\cap C$ and $b\in B\cap C$. Let $a=x_0, x1, \ldots, x_n=b$
+  Suppose $a\in A\cap C$ and $b\in B\cap C$. Let $a=x_0, x_1, \ldots, x_n=b$
   be a sequence in $C$ connecting $a$ to $b$ and let $k$ be the largest index such
-  that $x_k\in A$. Then $x_{k+1}\in B$ and $\{x_k, x_{k+1}\}$ are comparablie,
+  that $x_k\in A$. Then $x_{k+1}\in B$ and $\{x_k, x_{k+1}\}$ are comparable,
   contrary to assumption.
 \end{proof}
 
 
 \begin{lemma}\label{lem:cup-cap-cuts}
   Let $\I$ be a collection of connected intervals in a partially ordered set $X$.
-  If $L_2$ and $L_2$ are decreasing sets which cut $\I$ then $L_1\cap L_2$
+  If $L_1$ and $L_2$ are decreasing sets which cut $\I$ then $L_1\cap L_2$
   and $L_1\cup L_2$ cut $\I$ too.
 \end{lemma}
 
@@ -268,13 +269,13 @@ comparable elements $a\in A$ and $b\in B$.
   Since at least one of $L_1$ and $L_2$ cuts $I$, they cannot both contain $I$ and so
   since $L_1\cap L_2$ does not cut $I$ it must be disjoint from it.
   Similarly, they cannot both be disjoint from $I$ and so since $L_1\cup L_2$
-  does not cuit $E$ it must contain it. Thus
+  does not cut $I$ it must contain it. Thus
   \[
     I \subseteq (L_1 \cup L_2)\setminus(L_1\cap L_2)
       = (L_1\setminus L_2) \cup (L_2\setminus L_1)
   \]
   However $L_1\setminus L_2$ and $L_2\setminus L_1$ are incomparable sets and so by
-  Lemma~\ref{lem:incomparabale-sets-separate} $I$, being connected, must belong to
+  Lemma~\ref{lem:incomparable-sets-separate} $I$, being connected, must be contained in
   one of them, which contradicts the assumption that $L_1$ and $L_2$ cut $\I$.
 \end{proof}
 
@@ -349,8 +350,9 @@ $n(2)\ge 3$ if it holds for $d=2$.
   Suppose $L_1$ and $L_2$ cut $\I$. In view of Lemma~\ref{lem:cup-cap-cuts}, assume
   $L_1 \subseteq L_2$. Now, $L_1$ cannot cut $D$ for if so it would contain $C$,
   which $L_2$ could not then cut.
-  So $L_2$ must cut $D$ and so $L_1$ must cut $C$. But $L_1$ must also cut $B$ and
-  that can only happen if it excludes $12$. This implies $L_1 = \{11, 21\}$ and so it
+  So $L_2$ must cut $D$ and so $L_1$ must cut $C$. But $L_1$ must also cut $B$
+  for if it did not then $B\subseteq L_1\subseteq L_2$. But $L_1$ can only cut $B$
+  if $L_1$ excludes $12$. This implies $L_1 = \{11, 21\}$ and so it
   is up to $L_2$ to cut $A$, $E$, and $D$ which is  patently impossible as cutting
   $A$ and $D$ would mean it had to exclude $13$ and $32$, making it impossible to
   also cut $E$.
@@ -358,4 +360,30 @@ $n(2)\ge 3$ if it holds for $d=2$.
   Finally, $\I$ is $3$-cuttable: the set $\{11,12\}$ cuts $A$, the set $\{11,21\}$
   cuts $B$ and $C$, and the set $\{11,12,13,21,31\}$ cuts $D$ and $E$.
 \end{example}
+
+\begin{theorem}\label{thm:nested-cuts}
+  Let $X$ be a finite partially ordered set and $\I$ a collection of connected
+  intervals in $X$. If $\I$ is $n$-cuttable, then there are decreasing sets
+  $L_1\subseteq L_2\subseteq\cdots\subseteq L_n$ such that each $I\in\I$ is cut by at
+  least one $L_i$.
+\end{theorem}
+
+\begin{proof}
+  Among all $n$-tuples $(L_1,\ldots,L_n)$ of decreasing sets such that each member of
+  $\I$ is cut by some $L_i$, choose one for which $\sum_{i=1}^n|L_i|^2$ is as large as
+  possible. This is possible because $X$ is finite. We claim that the $L_i$ form a
+  chain. If not, then there are $i\ne j$ with $L_i\not\subseteq L_j$ and
+  $L_j\not\subseteq L_i$. Let $\I'$ be the set of members of $\I$ cut by none of the
+  $L_k$ with $k\ne i,j$. Every member of $\I'$ is cut by $L_i$ or $L_j$, so by
+  Lemma~\ref{lem:cup-cap-cuts} applied to $\I'$, it is cut by $L_i\cap L_j$ or
+  $L_i\cup L_j$. Hence replacing $L_i$ and $L_j$ by $L_i\cap L_j$ and $L_i\cup L_j$ gives another
+  $n$-tuple which cuts every member of $\I$. Writing $a=|L_i\cap L_j|$,
+  $p=|L_i\setminus L_j|>0$ and $q=|L_j\setminus L_i|>0$, we have
+  \[
+    |L_i\cap L_j|^2+|L_i\cup L_j|^2 - |L_i|^2 - |L_j|^2
+    = a^2+(a+p+q)^2-(a+p)^2-(a+q)^2 = 2pq > 0,
+  \]
+  contradicting the maximality of $\sum|L_i|^2$. Relabelling the chain in increasing
+  order gives $L_1\subseteq\cdots\subseteq L_n$.
+\end{proof}
 \end{document}

@@ -283,3 +283,55 @@ applied; Rule 3):
 **Decision (John):** apply 1, 2 and 6. Points 3–5 are obvious to the reader, so
 omit them. **Claude:** Done. `L_t` → `L(t)` throughout the proof, "cut every
 member of `I`", and the commented-out greedy proof removed. Compiles cleanly.
+
+### 2026-11-02: New lemmas and a shorter proof for the pentagon
+
+**Change (by John):** added Lemma `lem:incomparabale-sets-separate` (a connected set
+inside the union of two incomparable sets lies in one of them) and Lemma
+`lem:cup-cap-cuts` (if `L_1, L_2` cut a collection of connected intervals, so do
+`L_1 ∩ L_2, L_1 ∪ L_2`). Used them to shorten the 2-uncuttability proof in the
+pentagon example by assuming `L_1 ⊆ L_2`.
+
+**Claude:** Both lemmas are correct, and the uncrossing idea is a good one. Review
+(nothing changed; Rule 3):
+1. *Gap in the pentagon proof.* "But `L_1` must also cut `B`" isn't justified, and
+   `L_2` *can* cut `B` and `D` together (e.g. `{11,21,31}`). Suggested fix: "Since
+   `21 ∈ L_1 ⊆ L_2`, if `L_2` cut `B` then `12 ∉ L_2 ⊇ L_1`, and neither set could
+   cut `A`. So `L_1` cuts `B`."
+2. *Typos.* Lemma `cup-cap-cuts`: "`L_2` and `L_2`" → "`L_1` and `L_2`";
+   "does not cuit `E`" → "does not cut `I`"; "must belong to one of them" → "must
+   be contained in one of them". Lemma `incomparable-sets-separate`: "`x1`" →
+   "`x_1`", "comparablie" → "comparable".
+3. *Small points.* In Lemma `incomparable-sets-separate`, `x_{k+1}` exists because
+   incomparable sets are disjoint (`x ≤ x`), so `b ∉ A` and `k < n`. Also, "the sets
+   `L_1, ..., L_n` cut `I`" is used but never defined; one sentence near the
+   definition of `n`-cuttable would fix that. Lemma `cup-cap-cuts` uses only
+   connectedness, not convexity.
+4. *Suggested corollary (new text, to append):* if `L_1, ..., L_n` cut a collection
+   of connected sets in a finite poset, then some **nested** `L'_1 ⊆ ... ⊆ L'_n`
+   also cut it. Proof: repeatedly replace a non-nested pair by its intersection and
+   union. This strictly increases `Σ |L_i|²` (by `2·|L_1 \ L_2|·|L_2 \ L_1|`), so it
+   terminates. Consequence: in the conjecture we may always assume the cuts form a
+   chain. In `[k]×[k]` that means nested staircases, which should make the `d = 2`
+   case much easier to think about.
+
+**Follow-up (John):** added a justification for point 1 and fixed the typos. Asked
+Claude to give line numbers when reporting typos from now on.
+**Claude:** Will do. The new justification is correct ("if `L_1` didn't cut `B`, then
+`B ⊆ L_1 ⊆ L_2`", since `11, 21 ∈ L_1`). One wording point: at `main.tex:353–354`,
+"But this can only happen if `L_1` excludes `12`" reads as if "this" means
+`B ⊆ L_1`. It means "`L_1` cutting `B`". Suggest: "…`B ⊆ L_1 ⊆ L_2`. Since
+`21 ∈ L_1`, cutting `B` requires `12 ∉ L_1`, so `L_1 = {11, 21}` …".
+The corollary on nested cuts is still pending your OK.
+
+### 2026-11-02: Nested cuts
+
+**Claude:** Appended Theorem `thm:nested-cuts` (compiled as Theorem 2.7). In a finite
+poset, if a collection of connected intervals is `n`-cuttable, it is cut by a chain
+`L_1 ⊆ ... ⊆ L_n` of decreasing sets. The proof picks a cutting `n`-tuple
+maximising `Σ |L_i|²` and uncrosses any non-nested pair with Lemma `cup-cap-cuts`.
+Uncrossing raises the sum by `2pq`. Leftover typo: `main.tex:271` "does not cut
+`$E$`" should be "`$I$`". There's no `corollary` environment, so it is stated as a
+theorem; adding one would mean changing the preamble.
+
+**Follow-up (John):** keep it as a theorem; added a `corollary` environment for future use.
