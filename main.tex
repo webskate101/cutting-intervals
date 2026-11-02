@@ -3,14 +3,18 @@
 \usepackage[a4paper, margin=2.5cm]{geometry}
 
 \usepackage{amsmath,amsthm, amssymb}
-\usepackage{hyperref}
+% \usepackage{hyperref}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
-\newtheorem{conjecture}{Conjecture}
+% 1. Plain style for theorems, lemmas, and conjectures (italic body text)
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
 
+% 2. Definition style for definitions and examples (non-italic/upright body text)
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\NN}{\mathbb{N}}
 
@@ -227,12 +231,53 @@ by the single set $\{a\}$, yet no single decreasing set cuts all three pairs.
 
 \section{Connected Intervals}
 
+Given $x$ and $y$ in a partially ordered set $X$, say they are \emph{comparable}
+if $x\le y$ or $y\le x$.
+
 \begin{definition}
   Let $X$ be a partially ordered set. A subset $C\subseteq X$ is said to be
   \emph{connected} if for every $x,y\in C$ there is a finite sequence
-  $x=x_0,x_1,\ldots,x_n=y$ in $C$ such that for each $i$, either $x_i\le x_{i+1}$ or
-  $x_{i+1}\le x_i$.
+  $x=x_0,x_1,\ldots,x_n=y$ in $C$ such that for each $1 \le i \le n$,  $x_{i-1}$
+  and $x_i$ are comparable.
 \end{definition}
+
+Say that two subsets $A$ and $B$ of $X$ are \emph{incomparable} if there are no
+comparable elements $a\in A$ and $b\in B$.
+
+\begin{lemma}\label{lem:incomparabale-sets-separate}
+  Let $C$ be connected and suppose $C\subseteq A\cup B$ where
+  $A$ and $B$ are incomparable sets. Then $C$ is a subset of either $A$ or $B$.
+\end{lemma}
+
+\begin{proof}
+  Suppose $a\in A\cap C$ and $b\in B\cap C$. Let $a=x_0, x1, \ldots, x_n=b$
+  be a sequence in $C$ connecting $a$ to $b$ and let $k$ be the largest index such
+  that $x_k\in A$. Then $x_{k+1}\in B$ and $\{x_k, x_{k+1}\}$ are comparablie,
+  contrary to assumption.
+\end{proof}
+
+
+\begin{lemma}\label{lem:cup-cap-cuts}
+  Let $\I$ be a collection of connected intervals in a partially ordered set $X$.
+  If $L_2$ and $L_2$ are decreasing sets which cut $\I$ then $L_1\cap L_2$
+  and $L_1\cup L_2$ cut $\I$ too.
+\end{lemma}
+
+\begin{proof}
+  Let $I\in\I$ and suppose that neither $L_1\cap L_2$ nor $L_1\cup L_2$ cut $I$.
+  Since at least one of $L_1$ and $L_2$ cuts $I$, they cannot both contain $I$ and so
+  since $L_1\cap L_2$ does not cut $I$ it must be disjoint from it.
+  Similarly, they cannot both be disjoint from $I$ and so since $L_1\cup L_2$
+  does not cuit $E$ it must contain it. Thus
+  \[
+    I \subseteq (L_1 \cup L_2)\setminus(L_1\cap L_2)
+      = (L_1\setminus L_2) \cup (L_2\setminus L_1)
+  \]
+  However $L_1\setminus L_2$ and $L_2\setminus L_1$ are incomparable sets and so by
+  Lemma~\ref{lem:incomparabale-sets-separate} $I$, being connected, must belong to
+  one of them, which contradicts the assumption that $L_1$ and $L_2$ cut $\I$.
+\end{proof}
+
 
 \begin{conjecture}
   Let $X=[k_1]\times\cdots\times[k_d]$. There is a number $n = n(d)$ (i.e., dependent
@@ -300,26 +345,15 @@ $n(2)\ge 3$ if it holds for $d=2$.
     \{C,E\}:\ \{11,12,13,21\}.
   \end{gather*}
 
-  \emph{$\I$ is $2$-uncuttable.} Let $L$ be a decreasing set. Since each
-  comparability below is strict and $L$ is decreasing, one checks that
-  \begin{itemize}
-    \item $L$ cuts $A$ iff $12\in L$ and $13\notin L$;
-    \item $L$ cuts $B$ iff $11\in L$ and not both $12,21\in L$;
-    \item $L$ cuts $C$ iff $21\in L$ and $31\notin L$;
-    \item $L$ cuts $D$ iff $31\in L$ and $32\notin L$;
-    \item $L$ cuts $E$ iff $13\in L$ or $32\in L$, and $L\ne X$.
-  \end{itemize}
-  No $L$ cuts both $C$ and $D$. Suppose $L$ cuts $C$. Then $21\in L$ and
-  $31\notin L$, so also $32\notin L$. Now
-  \begin{itemize}
-    \item cutting $A$ requires $12\in L$ and $13\notin L$;
-    \item cutting $B$ requires $12\notin L$ (as $21\in L$);
-    \item cutting $E$ requires $13\in L$ (as $32\notin L$), and hence $12\in L$.
-  \end{itemize}
-  These conditions are pairwise incompatible, so $L$ cuts at most one of $A,B,E$.
-  If instead $L$ cuts $D$, then $31\in L$, so $21\in L$, and $32\notin L$. The same
-  three conditions apply, so again $L$ cuts at most one of $A,B,E$. Hence any two
-  decreasing sets cut at most four members of $\I$.
+  \emph{$\I$ is $2$-uncuttable.}
+  Suppose $L_1$ and $L_2$ cut $\I$. In view of Lemma~\ref{lem:cup-cap-cuts}, assume
+  $L_1 \subseteq L_2$. Now, $L_1$ cannot cut $D$ for if so it would contain $C$,
+  which $L_2$ could not then cut.
+  So $L_2$ must cut $D$ and so $L_1$ must cut $C$. But $L_1$ must also cut $B$ and
+  that can only happen if it excludes $12$. This implies $L_1 = \{11, 21\}$ and so it
+  is up to $L_2$ to cut $A$, $E$, and $D$ which is  patently impossible as cutting
+  $A$ and $D$ would mean it had to exclude $13$ and $32$, making it impossible to
+  also cut $E$.
 
   Finally, $\I$ is $3$-cuttable: the set $\{11,12\}$ cuts $A$, the set $\{11,21\}$
   cuts $B$ and $C$, and the set $\{11,12,13,21,31\}$ cuts $D$ and $E$.
