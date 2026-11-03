@@ -386,4 +386,173 @@ $n(2)\ge 3$ if it holds for $d=2$.
   contradicting the maximality of $\sum|L_i|^2$. Relabelling the chain in increasing
   order gives $L_1\subseteq\cdots\subseteq L_n$.
 \end{proof}
+
+\section{Investigation and Next Steps}
+
+This section records the results of a computer-assisted investigation of the
+conjecture. Throughout, $X$ is a finite partially ordered set, and all collections
+consist of connected intervals with at least two elements. (A collection containing a
+smaller interval satisfies the conclusion of the conjecture trivially.) For a
+collection $\I$ write $\tau(\I)$ for the least $n$ such that $\I$ is $n$-cuttable.
+
+\begin{definition}
+  A collection $\I$ is \emph{good} if every pairwise disjoint subcollection of $\I$ is
+  $1$-cuttable.
+\end{definition}
+
+In this language the conjecture asserts that $\tau(\I)\le n(d)$ for every good
+collection $\I$ of connected intervals in $[k_1]\times\cdots\times[k_d]$.
+Theorem~\ref{thm:chain-conjecture} gives $n(1)=2$, and Example~\ref{ex:pentagon}
+shows that $n(2)\ge 3$.
+
+\subsection{Reformulation via linear extensions}
+
+Let $\sigma=(x_1,\ldots,x_N)$ be a linear extension of $X$. For a subset $I$ with at
+least two elements put $f_\sigma(I)=\min\{i : x_i\in I\}$,
+$l_\sigma(I)=\max\{i : x_i\in I\}$, and define the \emph{window}
+\[
+  W_\sigma(I)=\{t\in\NN : f_\sigma(I)\le t<l_\sigma(I)\},
+\]
+which is a non-empty set of consecutive integers. Let $\nu_\sigma(\I)$ be the largest
+number of members of $\I$ whose windows are pairwise disjoint.
+
+\begin{theorem}\label{thm:linear-extensions}
+  Let $\I$ be a collection of connected intervals, each with at least two elements, in
+  a finite partially ordered set $X$. Then
+  \[
+    \tau(\I)=\min_\sigma \nu_\sigma(\I),
+  \]
+  where the minimum is over all linear extensions $\sigma$ of $X$.
+\end{theorem}
+
+\begin{proof}
+  Fix $\sigma$. The prefix $P_t=\{x_1,\ldots,x_t\}$ is a decreasing set, and it cuts
+  $I$ if and only if $t\in W_\sigma(I)$. By Gallai's theorem for intervals of integers,
+  the least number of integers meeting every window equals the largest number of
+  pairwise disjoint windows. Hence $\I$ is cut by $\nu_\sigma(\I)$ prefixes of
+  $\sigma$, and $\tau(\I)\le\nu_\sigma(\I)$.
+
+  Conversely, let $n=\tau(\I)$. By Theorem~\ref{thm:nested-cuts} there are decreasing
+  sets $L_1\subseteq\cdots\subseteq L_n$ cutting $\I$. Put $L_0=\emptyset$ and
+  $L_{n+1}=X$, and let $\sigma$ list the elements of $L_1\setminus L_0$, then those of
+  $L_2\setminus L_1$, and so on, each block in the order of some linear extension of
+  that block. This is a linear extension of $X$: if $x\le y$ and
+  $y\in L_i\setminus L_{i-1}$ then $x\in L_i$, so $x$ lies in the same block or an
+  earlier one. Each $L_i$ is a prefix of $\sigma$, so $n$ integers meet every window,
+  and therefore $\nu_\sigma(\I)\le n$.
+\end{proof}
+
+So the conjecture asks for a linear extension in which no long sequence of members
+occurs one after another.
+
+\subsection{Exact computations}
+
+For a given finite poset $X$ and integer $T$, we can decide by computer whether some
+good collection $\I$ of connected intervals in $X$ has $\tau(\I)\ge T$. There is one
+Boolean variable for each connected interval with at least two elements, indicating
+membership of $\I$. By Theorem~\ref{thm:nested-cuts}, $\tau(\I)\ge T$ is equivalent
+to the clauses ``some member of $\I$ is cut by none of $L_1,\ldots,L_{T-1}$'', one
+for each nested chain $L_1\subseteq\cdots\subseteq L_{T-1}$ of decreasing sets.
+Goodness is imposed lazily. Whenever the SAT solver proposes a collection, we search
+it for a pairwise disjoint $1$-uncuttable subcollection, and if one is found we add a
+clause forbidding it and repeat. Since every added clause is valid, an unsatisfiable
+outcome proves that every good collection in $X$ is $(T-1)$-cuttable. The programs
+are in the directory \texttt{code/} (\texttt{sat\_search.py} and
+\texttt{poset\_sat.py}).
+
+With $T=4$ the outcome was unsatisfiable in every case tried:
+\begin{center}
+  \begin{tabular}{ll}
+    \hline
+    Poset & Result \\
+    \hline
+    $[3]\times[3]$, $[4]\times[4]$, $[4]\times[5]$ & every good collection is $3$-cuttable \\
+    $[2]\times[2]\times[3]$, $[2]\times[2]\times[4]$, $[2]\times[3]\times[3]$ & every good collection is $3$-cuttable \\
+    $[2]\times[2]\times[2]\times[2]$ & every good collection is $3$-cuttable \\
+    $1130$ random posets on $8$--$13$ points & every good collection is $3$-cuttable \\
+    \hline
+  \end{tabular}
+\end{center}
+To generate the random posets, each pair $i<j$ was made comparable independently with
+probability $p\in[0.15,0.35]$, and the transitive closure was taken. Good collections with
+$\tau(\I)=3$ occur frequently in such posets, so the test is not vacuous. Together
+with Example~\ref{ex:pentagon}, the computations show that the best constant is
+exactly $3$ on each of $[3]\times[3]$, $[4]\times[4]$ and $[4]\times[5]$. (The case
+$[5]\times[5]$ had not finished at the time of writing.) These are computer
+verifications, not formal proofs.
+
+The evidence, including the higher-dimensional and random cases, suggests that
+dimension plays no role.
+
+\begin{conjecture}\label{conj:three}
+  Let $X$ be a finite partially ordered set. Every good collection of connected
+  intervals in $X$ is $3$-cuttable. In particular, $n(d)=3$ for every $d\ge 2$.
+\end{conjecture}
+
+\subsection{A proof strategy}
+
+Call a decreasing (respectively increasing) set \emph{free} if it contains no member
+of $\I$. The following shows how Conjecture~\ref{conj:three} would follow from a
+statement about free sets.
+
+\begin{theorem}\label{thm:three-cuts}
+  Let $\I$ be a collection of connected intervals, each with at least two elements,
+  in a finite partially ordered set $X$. Suppose there are a free decreasing set $D$
+  and a free increasing set $U$ such that every member of $\I$ contained in
+  $X\setminus(D\cup U)$ meets $P=\operatorname{Min}(X\setminus D)$. Then $\I$ is
+  $3$-cuttable, by the decreasing sets $D$, $D\cup P$ and $X\setminus U$.
+\end{theorem}
+
+\begin{proof}
+  The set $D\cup P$ is decreasing, since anything below an element of $P$ lies in $D$
+  or is that element. Let $I\in\I$. If $I$ meets $D$, then $D$ cuts $I$ because $D$
+  contains no member. If $I$ meets $U$, then $I$ also meets $X\setminus U$ because
+  $U$ contains no member, so $X\setminus U$ cuts $I$. Otherwise
+  $I\subseteq X\setminus(D\cup U)$, so $I$ meets $P$ by hypothesis. Moreover
+  $I\not\subseteq D\cup P$: otherwise $I\subseteq P$, but $P$ is an antichain and
+  the connected set $I$ contains two comparable elements. So $D\cup P$ cuts $I$.
+\end{proof}
+
+For $d=1$ this is the proof of Theorem~\ref{thm:chain-conjecture}, with
+$D=L(\max I_1-1)$ and $P=\{\max I_1\}$.
+
+\begin{conjecture}\label{conj:target}
+  If $\I$ is good, there are a maximal free decreasing set $D$ and a maximal free
+  increasing set $U$ satisfying the hypothesis of Theorem~\ref{thm:three-cuts}.
+\end{conjecture}
+
+Conjecture~\ref{conj:target} held in every test: $940$ random good collections
+in $[3]\times[3]$, $[3]\times[4]$, $[4]\times[4]$ and random posets on $10$--$12$
+points (\texttt{code/hypotheses.py}). The collections were built by adding random
+intervals while preserving goodness. All collections with $\tau=3$ among them came
+from the grids, so those are the substantive tests. The same experiments show that
+the pair $(D,U)$ must be chosen with care, since each of the following fails in some
+cases:
+\begin{enumerate}
+  \item every pair consisting of a maximal free decreasing set and a maximal free
+    increasing set satisfies the hypothesis of Theorem~\ref{thm:three-cuts};
+  \item every maximal free decreasing set $D$ has a maximal free increasing partner
+    $U$ such that the members inside $X\setminus(D\cup U)$ are $1$-cuttable;
+  \item for every maximal free decreasing set $D$, the members disjoint from $D$ are
+    $2$-cuttable;
+  \item the pairs maximising $|D|+|U|$, or maximising $|D|$ and $|U|$ separately,
+    satisfy the hypothesis of Theorem~\ref{thm:three-cuts} (these failed in $17$ of
+    $490$ collections in the grids).
+\end{enumerate}
+
+\subsection{Next steps}
+
+\begin{enumerate}
+  \item Find the right choice of $(D,U)$ in Conjecture~\ref{conj:target} and prove
+    it. Natural tools are the witnesses to maximality. For each $p\in P$ there is a
+    member $I_p$ with $p\in I_p\subseteq D\cup\{p\}$, and for each
+    $q\in\operatorname{Max}(X\setminus U)$ there is a member $J_q$ with
+    $q\in J_q\subseteq U\cup\{q\}$. A bad member $K$ should then combine with some of
+    these witnesses into a pairwise disjoint $1$-uncuttable subcollection.
+  \item Alternatively, attack Conjecture~\ref{conj:three} through
+    Theorem~\ref{thm:linear-extensions}, by constructing a linear extension $\sigma$
+    with $\nu_\sigma(\I)\le 3$.
+  \item Extend the computations to $[5]\times[5]$ and $[3]\times[3]\times[3]$, and
+    to larger random posets, to test Conjecture~\ref{conj:three} further.
+\end{enumerate}
 \end{document}

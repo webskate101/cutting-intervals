@@ -335,3 +335,64 @@ Uncrossing raises the sum by `2pq`. Leftover typo: `main.tex:271` "does not cut
 theorem; adding one would mean changing the preamble.
 
 **Follow-up (John):** keep it as a theorem; added a `corollary` environment for future use.
+
+### 2026-11-02: Second attempt at the conjecture (d = 2)
+
+Terminology: a collection is **good** if every pairwise disjoint subcollection is
+1-cuttable. The conjecture says good ⇒ `n(d)`-cuttable.
+
+**1. Reformulation via linear extensions (proof sketch, not yet in `main.tex`).**
+For connected intervals in any finite poset,
+`τ(I) = min over linear extensions σ of ν_σ(I)`. Here `τ` is the least `n` with
+`I` `n`-cuttable, and `ν_σ` is the largest number of members whose σ-windows
+`[first_σ I, last_σ I)` are pairwise disjoint. Reason: by Theorem `nested-cuts` the
+optimal cuts can be taken nested, so they are prefixes of one linear extension σ.
+For fixed σ, a prefix of length `t` cuts `I` iff `t` lies in the window, so this is
+the `d = 1` problem and Gallai applies. So the conjecture asks for a σ with no long
+run of σ-separated members.
+
+**2. Exact computations** (`code/sat_search.py`, SAT solver with goodness clauses
+added lazily; UNSAT is a proof for that poset). "Every good family is 3-cuttable"
+holds in:
+`[3]×[3]` (3 is attained by the pentagon), `[4]×[4]`, `[4]×[5]`, `[2]×[2]×[3]`,
+`[2]×[2]×[4]`, `[2]×[3]×[3]`, `[2]^4`. `[5]×[5]` is still running.
+`code/poset_sat.py`: the same holds in 1,130 random posets with 8–13
+elements. (Families needing 3 cuts are common there, so the test isn't vacuous.)
+
+**Conjecture′ (stronger).** In *every* finite poset, a good collection of connected
+intervals is 3-cuttable. This would give `n(d) = 3` for all `d ≥ 2`, independent
+of `d`. The evidence suggests the reason is order-theoretic, not geometric.
+
+**3. A proof strategy that survived every test** (`code/hypotheses.py`). Call a
+decreasing set *free* if it contains no member, and likewise for increasing sets.
+*Target lemma:* if `I` is good, there are a maximal free decreasing set `D` and a
+maximal free increasing set `U` such that every member inside `X \ (D ∪ U)` meets
+`P = Min(X \ D)`.
+The lemma implies Conjecture′, using the three cuts `D`, `D ∪ P` and `X \ U`:
+- `D` cuts every member meeting `D` (`D` is free).
+- `X \ U` cuts every member meeting `U` (`U` is free).
+- `D ∪ P` cuts every member in the middle, because such a member meets `P` and a
+  connected set with `≥ 2` points can't lie inside the antichain `P`.
+In `d = 1` this is exactly John's proof of Theorem 2 (`D = L(max I_1 − 1)`,
+`P = {max I_1}`).
+Tested on 940 random good families (grids and random posets):
+- The target lemma never failed.
+- "*Every* pair `(D, U)` works" fails.
+- "*Every* maximal free `D` has a partner `U`" fails, rarely.
+- "The members avoiding an arbitrary maximal free `D` are 2-cuttable" fails, rarely.
+So a proof has to choose `D` and `U` carefully. I don't yet know the right
+extremal choice.
+Caveat: in the random-poset runs the sampled families were all 2-cuttable, so the
+real test of the lemma is the grid runs.
+
+**Suggested next steps:** (a) find the right choice of `(D, U)` and prove the target
+lemma, perhaps by an extremal choice (e.g. maximise `|D| + |U|`) plus goodness
+applied to `{I_p, K}` or `{I_p, K, J_q}`, where `I_p ⊆ D ∪ {p}` and `J_q ⊆ U ∪ {q}`
+are the witnesses to maximality; (b) write up the linear-extension reformulation.
+*Update:* the obvious extremal choices fail. Maximising `|D| + |U|`, or maximising
+`|D|` and `|U|` separately, breaks the target lemma in a few percent of grid
+families (17 of 490). The right choice of `(D, U)` is still open.
+
+### 2026-11-02: Write-up
+
+Appended section "Investigation and Next Steps" to `main.tex`. It contains the linear-extension theorem (with proof), the exact computations, Conjecture `conj:three`, Theorem `thm:three-cuts` (the target lemma implies 3 cuts, with proof), Conjecture `conj:target`, the strategies that failed, and next steps. Numbers corrected: 1,130 random posets with 8–13 points; 940 families for the strategy tests. `[5]x[5]` still running.
