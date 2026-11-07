@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[10pt, a4paper]{article}
 
 \usepackage[a4paper, margin=2.5cm]{geometry}
 
@@ -16,8 +16,11 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
 \newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
 \newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
 
 \title{Cutting Intervals in Partially Ordered Sets}
 \author{John Lindsay Orr \and Claude}
@@ -230,6 +233,7 @@ by the single set $\{a\}$, yet no single decreasing set cuts all three pairs.
   pairs, so by Example~\ref{ex:product}(a) it is $(N-1)$-uncuttable.
 \end{proof}
 
+
 \section{Connected Intervals}
 
 Given $x$ and $y$ in a partially ordered set $X$, say they are \emph{comparable}
@@ -245,7 +249,7 @@ if $x\le y$ or $y\le x$.
 Say that two subsets $A$ and $B$ of $X$ are \emph{incomparable} if there are no
 comparable elements $a\in A$ and $b\in B$.
 
-\begin{lemma}\label{lem:incomparable-sets-separate}
+\begin{lemma}\label{lem:two-incomparable-sets-separate}
   Let $C$ be connected and suppose $C\subseteq A\cup B$ where
   $A$ and $B$ are incomparable sets. Then $C$ is a subset of either $A$ or $B$.
 \end{lemma}
@@ -257,6 +261,47 @@ comparable elements $a\in A$ and $b\in B$.
   contrary to assumption.
 \end{proof}
 
+\begin{corollary}\label{cor:incomparable-sets-separate}
+  Let $C$ be connected and suppose $C\subseteq \bigcup_{i=1}^n A_i$ where the $A_i$
+  are pairwise incomparable. Then $C\subseteq A_i$ for some $i$.
+\end{corollary}
+
+\begin{proof}
+  Suppose not and find $i_0$ such that $C\cap A_{i_0}\not=\emptyset$. Then also
+  $C\cap \bigcup_{i\not= i_0} A_i \not=\emptyset$. But  $A_{i_0}$ and
+  $\bigcup_{i\not= i_0} A_i$ are incomparable so the result follows
+  by Lemma~\ref{lem:two-incomparable-sets-separate}.
+\end{proof}
+
+\begin{remark}\label{ref:connected-components}
+  If $X$ is a poset then it splits into the disjoint union of connected
+  components, which are just the equivalence classes of the connectedness of
+  elements. The connected components are both increasing and decreasing sets.
+  If $S\subseteq X$ then $S$ is also a poset in its own right and we can
+  talk about the connected components of $S$. The connected components of
+  $S$ are not necessarily increasing or decreasing in $X$, but they are
+  \emph{relatively} increasing or decreasing, so that if $s$ and $t$
+  are in $S$, and are comparable, then they must belong to the same component.
+  Clearly the components of $S$ are incomparable sets and the components of
+  intervals are intervals.
+\end{remark}
+
+\begin{lemma}\label{lem:many-to-one-across-incomparable-sets}
+  Let $A_i$ be incomparable sets and let $L_i$ be decreasing sets. Then there
+  is a decreasing set $L$ such that $L\cap A_i = L_i\cap A_i$ for all $i$.
+\end{lemma}
+
+\begin{proof}
+  Let
+  \[
+    L := \bigcup\{L(x) \;:\; x\in L_i \cap A_i \text{ for some $i$ } \}
+  \]
+  Let $x\in L\cap A_i$. Then there is a $j$ and a $y\in L_j\cap A_j$ which dominates $x$.
+  If $i\not=j$ then $x\in A_i$ and $y\in A_j$ are comparable, contrary to fact.
+  So $i=j$ and $y\in L_i$, which is decreasing and $x\le y$, so $x\in L_i\cap A_i$.
+  It follows that $L\cap A_i \subseteq L_i\cap A_i$, and the reverse inclusion
+  is trivial.
+\end{proof}
 
 \begin{lemma}\label{lem:cup-cap-cuts}
   Let $\I$ be a collection of connected intervals in a partially ordered set $X$.
@@ -275,7 +320,7 @@ comparable elements $a\in A$ and $b\in B$.
       = (L_1\setminus L_2) \cup (L_2\setminus L_1)
   \]
   However $L_1\setminus L_2$ and $L_2\setminus L_1$ are incomparable sets and so by
-  Lemma~\ref{lem:incomparable-sets-separate} $I$, being connected, must be contained in
+  Lemma~\ref{lem:two-incomparable-sets-separate} $I$, being connected, must be contained in
   one of them, which contradicts the assumption that $L_1$ and $L_2$ cut $\I$.
 \end{proof}
 
@@ -555,4 +600,196 @@ cases:
   \item Extend the computations to $[5]\times[5]$ and $[3]\times[3]\times[3]$, and
     to larger random posets, to test Conjecture~\ref{conj:three} further.
 \end{enumerate}
+
+
+\section{The Two-Dimensional Case}
+
+\begin{definition}
+ Let $S\subseteq [k_1]\times[k_2]$. Say that a point $(a,b)\in S$ is
+ \emph{$(+,-)$-extreme} if neither $(a+1, b)$ nor $(a, b-1)$ lie in $S$.
+ Define \emph{$(-, +)$-extremality} analogously.
+\end{definition}
+
+
+\begin{lemma}\label{lem:extremal-points-exist}
+  Let $I$ be a connected interval in $[k_1]\times[k_2]$. Then $I$ has a unique
+  $(+,-)$-extreme point.
+\end{lemma}
+
+\begin{proof}
+  To prove existence, let
+  \[
+    a := \max\{x \;:\;\ (x,y)\in I\text{ for some $y$} \}
+  \]
+  and
+  \[
+    b := \min\{y \;:\;\ (x,y)\in I\text{ for some $x$} \}
+  \]
+  Thus there are $x$ and $y$ such that $(x, b)$ and $(a, y)$ are in $I$.
+  However, since $(x, b)\in I$, it follows from the definition of $a$ that
+  $x\le a$. Similarly by the definition of $b$, $y\ge b$. Thus
+  \[
+    (x, b) \le (a,b) \le (a, y)
+  \]
+  and by order convexity, $(a,b)\in I$. Clearly $(a,b)$ is $(+, -)$-extreme.
+
+  Now, to prove uniqueness, let $(a,b)$ be as defined in the last paragraph and suppose
+  $(c,d)$ is some other $(+, -)$-extreme point.
+  By the definition of $(a,b)$, we have $c\le a$ and $d\ge b$,
+  and both can not be equal so suppose without loss of generality that $c < a$.
+
+  Since $I$ is connected, let $(x_i, y_i)$ ($0\le i\le n$) connect $(c,d)$ to $(a,b)$
+  with $(x_0, y_0)=(c,d)$ and $(x_n, y_n)=(a,b)$.
+  Since $x_n=a > c$, let $i$ be the least index for which $x_i > c$. It follows that
+  $x_{i-1} \le c < x_i$ and since $(x_{i-1}, y_{i-1})$ and $(x_i, y_i)$ are comparable,
+  this is only possible if $y_{i-1}\le y_i$.
+  Moreover, we cannot have $y_i \ge d$ for if we did, then
+  \[
+    (c,d) \le (c+1, d) \le (x_i, y_i)
+  \]
+  and by order convexity this would contradict the extremality of $(c,d)$.
+  Thus $y_{i-1} \le y_i<d$. This implies
+  \[
+    (x_{i-1}, y_{i-1}) \le (c, y_{i-1}) \le (x_i, y_i)
+  \]
+  so $(c, y_{i-1})\in I$ and so, since
+  \[
+    (c, y_{i-1}) \le (c, d-1) \le (c,d)
+  \]
+  this contradicts the extremality of $(c,d)$.
+\end{proof}
+
+By the dual argument we also obtain the following:
+
+\begin{corollary}
+  Let $I$ be a connected interval in $[k_1]\times[k_2]$. Then $I$ has a unique
+  $(-,+)$-extreme point.
+\end{corollary}
+
+
+\begin{theorem}
+  Let $\I$ be a 3-uncuttable collection of connected interals in $[k_1]\times [k_2]$.
+  Then there is an interval $I_0 \in \I$ with the property that
+  either $L(p)$ contains an interval of $\I$ for every $p\in I_0$
+  or else $U(p)$ contains an interval of $\I$ for every $p\in I_0$
+\end{theorem}
+
+\begin{proof}
+  Suppose for a contradiction that no such interval exists.
+  Let $D$ be the set of $x\in[k_1]\times[k_2]$ such that $U(p)$ contains an interval
+  of $\I$ and let $U$ be the set of $p\in[k_1]\times[k_2]$ such that $L(p)$ contains
+  an interval of $\I$. Clearly $D$ is decreasing and $U$ is increasing.
+
+  If $p\in D\cap U$ then both $L(p)$ and $U(p)$ contain elements of $\I$
+  and since every element of $U(p)$ dominates every element of $L(p)$, this
+  would contradict our hypothesis.
+  So supppose $D\cap U = \emptyset$, so that $D\subseteq U^c$.
+
+  Also, by hypothesis, we may suppose that neither $U$ nor $D$ contain an interval of $\I$.
+  Thus all the intervals of $\I$ are either cut by one of $D$ or $U^c$
+  or else are contained in $U^c\setminus D$. It follows that the set $\J$ of intervals
+  of $\I$ contained in $\Delta := U^c\setminus D$ cannot be cut by a single decreasing set.
+
+  Consider the connected components of $\Delta$. These are pairwise incomparable intervals
+  (see Remark~\ref{ref:connected-components}) and every
+  interval in $\J$ is contained in their union, so by Corollary~\ref{cor:incomparable-sets-separate}
+  each interval is contained in one or another of these components. Now if the intervals
+  of each component were individually $1$-cuttable, then by
+  Lemma~\ref{lem:many-to-one-across-incomparable-sets}, all the intervals contained
+  in $\Delta$ would be $1$-cuttable, contrary to fact. Thus we replace $\Delta$ by one of its
+  components which has the property that the set of intervals which it contains
+  are not $1$-cuttable. As a result we can now suppose $\Delta$ is connected and $\J$
+  is the set of intervals of $\I$ which it contains.
+
+  So far, the argument hasn't relied on the underlying poset being $[k_1]\times[k_2]$
+  but now we make critical use of the two-dimensional nature of the poset. By
+  Lemma~\ref{lem:extremal-points-exist}, choose $(x_0, y_0)$ so that $(x_0+1, y_0)$ is
+  the $(-, +)$-extremal point of $\Delta$. (It's possible that $x_0$, and also some of the points
+  $p_i$ and $q_i$ defined below, might fall outside $[k_1]\times[k_2]$. This does not
+  cause any problems as we only rely on order relations which are inherited from the natural
+  embedding in $\ZZ\times\ZZ$.)
+
+  Let $x_1$ be the largest $x$ such that $(x, y_0)\in\Delta$ and let $y_1=y_0$.
+  Next, let $y_2$ be the smallest $y$ such that $(x_1, y)\in\Delta$ and let $x_2 = x_1$.
+  Continue in this way, constructing points $(x_i, y_i)$ with the property that
+  at each step $x_{2i+1} \ge x_{2i}$, $y_{2i+1} = y_{2i}$, and
+  $x_{2i+2} = x_{2i+1}$, $y_{2i+2} \le y_{2i+1}$, until we reach a step $n$ at which
+  $(x_{n+1}, y_{n+1}) = (x_n, y_n)$. We know the process must terminate at a finite
+  $n$ because at each non-terminating step either $x_i$ strictly increases or $y_i$ strictly decreases.
+  Clearly the point $(x_n, y_n)$ at which the process terminates is the $(+, -)$-extremal
+  point of $\Delta$ and all of $(x_i, y_i)$ (except $i=0$) are in $\Delta$.
+
+  Now define $p_i := (x_{2i+1}, y_{2i+1} - 1)$ for $0\le i\le \lfloor\frac{n-1}{2}\rfloor$
+  and $q_i := (x_{2i}+1, y_{2i})$ for $0\le i\le \lfloor \frac{n}{2}\rfloor$.
+  We shall show that the sets $L(p_i)\cap\Delta$ are pairwise incomparable, as are
+  also the sets $U(q_i)\cap\Delta$ and that, moreover, together the two collections
+  of sets partition $\Delta$.
+
+  For suppose
+  $(x,y)\in L({p_i})\cap L(p_j)$ for some $i<j$. Then
+  \[
+    x \le \min\{x_{2i+1}, x_{2j+1}\} \quad\text{and}\quad y \le \min\{y_{2i+1}-1, y_{2j+1}-1\}
+  \]
+  and, by construction, $x_{2i+1}\le x_{2j+1}$ and $y_{2i+1}\ge y_{2j+1}$ so that in fact
+  $x\le x_{2i+1}$ and $y\le y_{2j+1}-1$. But note also that
+  $y_{2j+1}\le y_{2(i+1)+1}\le y_{2i+2}$ and so
+  \[
+    (x,y) \le (x_{2i+1}, y_{2j+1} - 1) \le (x_{2i+1}, y_{2i+2} - 1) \le (x_{2i+2}, y_{2i+2})
+  \]
+  But if, in addition,  $(x,y)\in\Delta$ then by order convexity $(x_{2i+1}, y_{2i+2} - 1)\in\Delta$,
+  contrary to the construction step for $y_{2i+2}$. Thus the sets $L(p_i)\cap \Delta$
+  are pairwise disjoint. It follows moreover that they are pairwise incomparable,
+  for if $s_i\in L(p_i)$ and $s_j\in L(p_j)$ are comparable then one of them must be
+  in $L(p_i)\cap L(p_j)$ and so cannot be in $\Delta$.
+
+  By a similar agument, the sets $U(q_i)\cap\Delta$ are pairwise incomparable, for if
+  $(x,y)\in U(q_i)\cap U(q_j)$ for $i>j$ then $x\ge x_{2i}+1$ and
+  $y\ge y_{2j}$. Since $2j+1 \le 2i$, $x_{2j+1}\le x_{2i}$ and so
+  $x_{2j}\le x_{2j+1} + 1 \le x_{2i} + 1 \le x$ so that
+  \[
+    (x_{2j}, y_{2j}) \le (x_{2j+1}+1, y_{2j}) \le (x,y)
+  \]
+  Suppose first that $j>0$.
+  If $(x,y)\in\Delta$ then, as before, by order convexity this would imply
+  $(x_{2j+1}+1, y_{2j})\in\Delta$, contrary to the construction of $x_{2j+1}$.
+  When $j=0$ this argument does not apply, since $(x_0, y_0)\not\in\Delta$, however
+  \[
+    (x_0+1, y_0) \le (x_1 +1, y_0)\le (x,y)
+  \]
+  and since $(x_0+1, y_0)\in\Delta$, this would still contradict the construction of
+  $x_1$ if $(x,y)$ were in $\Delta$. Incomparability follows as above.
+
+  To complete the proof that the sets $L(p_i)\cap\Delta$ and $U(q_i)\cap\Delta$ together
+  are pairwise disjoint, suppose that $(x,y)\in L(p_i)\cap \Delta$ for some
+  $i$. Since $(x,y)\in L(p_i)$ then $x\le x_{2i+1}$ and $y< y_{2i+1}$.
+  If $j\le i$ then $y_{2j}\ge y_{2i}\ge y_{2i+1}>y$ and so $(x,y)\not\in U(q_j)$.
+  Likewise, if $j>i$ then $x\le x_{2i+1}\le x_{2(i+1)}\le x_{2j}$ and so, again,
+  $(x,y)\not\in U(q_j)$.
+
+  Finally, to see that $L(p_i)\cap\Delta$ and $U(q_i)\cap\Delta$ partition $\Delta$
+  fix $(x,y)\in\Delta$.
+  We know that $(x_0,y_0)$ is the $(-,+)$-extreme point and $(x_n, y_n)$ is the
+  $(+,-)$-extreme point. The $x_i$ increase from $x_0$ to $x_n$ and the $y_i$ decrease
+  from $y_0$ to $y_n$. By the proof of Lemma~\ref{lem:extremal-points-exist}
+  we also know that $x_0\le x\le x_n$ and $y_0\ge y\ge y_n$. Let $l$ be minimal
+  such that $x\le x_l$ and note that since $(x_0, y_0)\not\in\Delta$, $l>x_0$.
+  Thus $x_{l-1} < x \le x_l$.
+  Since by construction $x_{2i+1} = x_{2i+2}$, it follows that $l$ must be odd, say $l=2i+1$.
+  If on one hand $y < y_{2i+1}$ then $(x,y)\in L(p_i)$ and if, on the other hand,
+  $y\ge y_{2i+1} = y_{2i}$ then, since $x > x_{2i}$, so
+  $(x,y)\in U(q_i)$.
+
+  The main result now follows quickly. We know that the decreasing set $L := \bigcup L(p_i)$
+  does not cut all the intervals of $\J$ and so there is an interval
+  $J\subseteq\Delta$ in $\J$ which is either contained in $L$ or in $L^c$.
+  Suppose first that $J\subseteq L$. By Corollary~\ref{cor:incomparable-sets-separate},
+  $J$ must be contained in one of the sets $L(p_i)\cap\Delta\subseteq L(\,(x_{2i+1}, y_{2i+1})\,)$,
+  which would imply $(x_{2i+1}, y_{2i+1})\in U$, contrary to construction. Similarly,
+  if $J\subseteq L^c$ then $J\subseteq \bigcup U(q_i)$ and, in the same way,
+  $J\subseteq U(q_i)\cap\Delta\subseteq U(\,(x_{2i}, y_{2i})\,)$ for some $i$, which would
+  imply $(x_{2i}, y_{2i})\in D$, also contrary to fact.
+\end{proof}
+
+
 \end{document}
+
