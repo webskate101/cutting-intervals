@@ -667,23 +667,23 @@ By the dual argument we also obtain the following:
 \end{corollary}
 
 
-\begin{theorem}
-  Let $\I$ be a 3-uncuttable collection of connected interals in $[k_1]\times [k_2]$.
+\begin{theorem}\label{thm:2d-zig-zag}
+  Let $\I$ be a 3-uncuttable collection of connected intervals in $[k_1]\times [k_2]$.
   Then there is an interval $I_0 \in \I$ with the property that
   either $L(p)$ contains an interval of $\I$ for every $p\in I_0$
-  or else $U(p)$ contains an interval of $\I$ for every $p\in I_0$
+  or else $U(p)$ contains an interval of $\I$ for every $p\in I_0$.
 \end{theorem}
 
 \begin{proof}
   Suppose for a contradiction that no such interval exists.
-  Let $D$ be the set of $x\in[k_1]\times[k_2]$ such that $U(p)$ contains an interval
+  Let $D$ be the set of $p\in[k_1]\times[k_2]$ such that $U(p)$ contains an interval
   of $\I$ and let $U$ be the set of $p\in[k_1]\times[k_2]$ such that $L(p)$ contains
   an interval of $\I$. Clearly $D$ is decreasing and $U$ is increasing.
 
   If $p\in D\cap U$ then both $L(p)$ and $U(p)$ contain elements of $\I$
   and since every element of $U(p)$ dominates every element of $L(p)$, this
   would contradict our hypothesis.
-  So supppose $D\cap U = \emptyset$, so that $D\subseteq U^c$.
+  Hence $D\cap U = \emptyset$, so that $D\subseteq U^c$.
 
   Also, by hypothesis, we may suppose that neither $U$ nor $D$ contain an interval of $\I$.
   Thus all the intervals of $\I$ are either cut by one of $D$ or $U^c$
@@ -742,7 +742,7 @@ By the dual argument we also obtain the following:
   for if $s_i\in L(p_i)$ and $s_j\in L(p_j)$ are comparable then one of them must be
   in $L(p_i)\cap L(p_j)$ and so cannot be in $\Delta$.
 
-  By a similar agument, the sets $U(q_i)\cap\Delta$ are pairwise incomparable, for if
+  By a similar argument, the sets $U(q_i)\cap\Delta$ are pairwise incomparable, for if
   $(x,y)\in U(q_i)\cap U(q_j)$ for $i>j$ then $x\ge x_{2i}+1$ and
   $y\ge y_{2j}$. Since $2j+1 \le 2i$, $x_{2j+1}\le x_{2i}$ and so
   $x_{2j}\le x_{2j+1} + 1 \le x_{2i} + 1 \le x$ so that
@@ -772,7 +772,7 @@ By the dual argument we also obtain the following:
   $(+,-)$-extreme point. The $x_i$ increase from $x_0$ to $x_n$ and the $y_i$ decrease
   from $y_0$ to $y_n$. By the proof of Lemma~\ref{lem:extremal-points-exist}
   we also know that $x_0\le x\le x_n$ and $y_0\ge y\ge y_n$. Let $l$ be minimal
-  such that $x\le x_l$ and note that since $(x_0, y_0)\not\in\Delta$, $l>x_0$.
+  such that $x\le x_l$ and note that since $(x_0, y_0)\not\in\Delta$, $l>0$.
   Thus $x_{l-1} < x \le x_l$.
   Since by construction $x_{2i+1} = x_{2i+2}$, it follows that $l$ must be odd, say $l=2i+1$.
   If on one hand $y < y_{2i+1}$ then $(x,y)\in L(p_i)$ and if, on the other hand,
@@ -786,9 +786,141 @@ By the dual argument we also obtain the following:
   $J$ must be contained in one of the sets $L(p_i)\cap\Delta\subseteq L(\,(x_{2i+1}, y_{2i+1})\,)$,
   which would imply $(x_{2i+1}, y_{2i+1})\in U$, contrary to construction. Similarly,
   if $J\subseteq L^c$ then $J\subseteq \bigcup U(q_i)$ and, in the same way,
-  $J\subseteq U(q_i)\cap\Delta\subseteq U(\,(x_{2i}, y_{2i})\,)$ for some $i$, which would
-  imply $(x_{2i}, y_{2i})\in D$, also contrary to fact.
+  $J\subseteq U(q_i)\cap\Delta\subseteq U(\,(x_{2i}, y_{2i})\,)$ for some $i$.
+  This imples $(x_{2i}, y_{2i})\in D$ which is a contradiction if $i>0$. In the
+  case $i=0$, since $q_0\in\Delta$, the inclusion $J\subseteq U(q_0)$ implies
+  $q_0\in\Delta$ which yields the desired
+  contradiction.
 \end{proof}
+
+\section{Bounded Splittings and Higher Dimensions}
+
+The proof of Theorem~\ref{thm:2d-zig-zag} uses the two-dimensional structure in only
+one place: the construction of the decreasing set $L=\bigcup L(p_i)$. This section
+isolates the property of $L$ that the proof needs. The rest of the argument then
+works in any finite partially ordered set.
+
+\begin{definition}\label{def:bounded-splitting}
+  Let $P$ be a finite partially ordered set. A decreasing set $S\subseteq P$ is a
+  \emph{bounded splitting} of $P$ if every connected component of $S$ and every
+  connected component of $P\setminus S$ has an upper bound or a lower bound in $P$.
+\end{definition}
+
+If $\Delta$ is a subset of a partially ordered set $X$, we regard $\Delta$ as a
+partially ordered set with the inherited order. A bounded splitting $S$ of $\Delta$ is
+then a relatively decreasing subset of $\Delta$, and $L=L(S)$ is a decreasing subset
+of $X$ with $L\cap\Delta=S$. If $\Delta$ is disconnected, its components are pairwise
+incomparable, so a bounded splitting of $\Delta$ is just a union of bounded splittings
+of its components.
+
+For a collection $\I$ of intervals in $X$ let
+\[
+  D_\I=\{p\in X : U(p) \text{ contains a member of } \I\},\qquad
+  U_\I=\{p\in X : L(p) \text{ contains a member of } \I\}.
+\]
+Clearly $D_\I$ is decreasing and $U_\I$ is increasing.
+
+\begin{theorem}\label{thm:bounded-splitting-three}
+  Let $\I$ be a $3$-uncuttable collection of connected intervals in a finite partially
+  ordered set $X$, and let $\Delta=X\setminus(D_\I\cup U_\I)$. If $\Delta$ has a
+  bounded splitting, then some member of $\I$ is contained in $D_\I$ or in $U_\I$.
+\end{theorem}
+
+\begin{proof}
+  The argument is that of Theorem~\ref{thm:2d-zig-zag}. Suppose that no member of $\I$
+  is contained in $D_\I$ or in $U_\I$.
+
+  First, $D_\I\cap U_\I=\emptyset$. Indeed, if $p\in D_\I\cap U_\I$, there are members
+  $I\subseteq L(p)$ and $J\subseteq U(p)$. For every $q\in J$ we have
+  $I\subseteq L(p)\subseteq L(q)$, so $q\in U_\I$. Hence $J\subseteq U_\I$, contrary to
+  assumption.
+
+  Next, a member meeting $D_\I$ is cut by $D_\I$, and a member meeting $U_\I$ is cut
+  by the decreasing set $X\setminus U_\I$, since neither set contains a member. Every
+  other member is contained in $\Delta$. Let $S$ be a bounded splitting of $\Delta$
+  and $L=L(S)$. Since $\I$ is $3$-uncuttable, some member $J\subseteq\Delta$ is not cut
+  by $L$. Then $J\subseteq S$ or $J\subseteq\Delta\setminus S$. As $J$ is connected, it
+  lies in a single component $C$ of $S$ or of $\Delta\setminus S$, and $C$ has an
+  upper or a lower bound $r\in\Delta$. If $J\subseteq C\subseteq L(r)$ then
+  $r\in U_\I$, and if $J\subseteq C\subseteq U(r)$ then $r\in D_\I$. Either way this
+  contradicts $r\in\Delta$.
+\end{proof}
+
+Note that a member inside a component bounded \emph{below} gives a contradiction just
+as well as one inside a component bounded above. So, unlike in the proof of
+Theorem~\ref{thm:2d-zig-zag}, it does not matter which bound each component has.
+
+\begin{remark}
+  In $[k_1]\times[k_2]$ every connected interval $\Delta$ has a bounded splitting. With
+  the notation of the proof of Theorem~\ref{thm:2d-zig-zag}, the set
+  $S=\bigcup_i L(p_i)\cap\Delta$ is a bounded splitting. The components of $S$ lie in
+  the pairwise incomparable sets $L(p_i)\cap\Delta$, which are bounded above by
+  $(x_{2i+1},y_{2i+1})\in\Delta$. The components of $\Delta\setminus S$ lie in the sets
+  $U(q_i)\cap\Delta$, which are bounded below by $(x_{2i},y_{2i})\in\Delta$ for
+  $i\ge 1$ and by $q_0\in\Delta$ for $i=0$. By the comment after
+  Definition~\ref{def:bounded-splitting}, every interval in $[k_1]\times[k_2]$ has a
+  bounded splitting. So Theorem~\ref{thm:2d-zig-zag} is the two-dimensional case of
+  Theorem~\ref{thm:bounded-splitting-three}.
+\end{remark}
+
+\begin{conjecture}\label{conj:bounded-splitting}
+  Every finite partially ordered set has a bounded splitting.
+\end{conjecture}
+
+If Conjecture~\ref{conj:bounded-splitting} holds, then the conclusion of
+Theorem~\ref{thm:bounded-splitting-three} holds for every $3$-uncuttable collection of
+connected intervals in every finite partially ordered set. In particular, it holds in
+$[k_1]\times\cdots\times[k_d]$ for every $d$.
+
+The conjecture has been checked by computer, using the programs
+\texttt{zigzag.py}, \texttt{relaxed\_sample.py} and \texttt{splitting.py} in the
+directory \texttt{code/}:
+\begin{itemize}
+  \item exhaustively, for every interval of $[3]\times[3]$, $[4]\times[4]$,
+    $[2]\times[3]\times[3]$, $[2]\times[2]\times[4]$ and $[2]^4$;
+  \item for $3000$ randomly sampled intervals of $[3]^3$, $800$ of $[3]\times[3]\times[4]$
+    and $1000$ of $[2]^3\times[3]$;
+  \item for every interval of $580$ random posets with $10$--$13$ elements, and for
+    $353$ random connected posets with $12$--$18$ elements.
+\end{itemize}
+Combined with Theorem~\ref{thm:bounded-splitting-three}, the exhaustive checks give a
+computer-assisted proof of the conclusion of Theorem~\ref{thm:2d-zig-zag} in
+$[2]\times[3]\times[3]$, $[2]\times[2]\times[4]$ and $[2]^4$.
+
+The relaxation from the proof of Theorem~\ref{thm:2d-zig-zag} is necessary in higher
+dimensions, as the following example shows.
+
+\begin{example}\label{ex:no-strict-zig-zag}
+  In $X=[2]\times[3]\times[3]$, writing $abc$ for $(a,b,c)$, let
+  \[
+    \Delta=\{112,113,121,122,123,131,132,133,212,221,222\}
+          =L(\{133,222\})\setminus L(211),
+  \]
+  which is a connected interval. A computer search over all decreasing sets shows that
+  no decreasing set $L$ has every component of $L\cap\Delta$ bounded above and every
+  component of $\Delta\setminus L$ bounded below in $\Delta$. In other words,
+  the conclusion of the construction in Theorem~\ref{thm:2d-zig-zag} fails. However,
+  $S=L(122)\cap\Delta=\{112,121,122\}$ is a bounded splitting. $S$ is bounded above by
+  $122$, and $\Delta\setminus S$ has the two incomparable components
+  $\{113,123,131,132,133\}$ and $\{212,221,222\}$, bounded above by $133$ and $222$
+  respectively.
+\end{example}
+
+Bounded splittings need not be generated by a single point. In $[3]^3$ the connected
+interval
+\[
+  \{113,121,122,123,131,211,212,213,221,231,311,321,331\}
+\]
+has no bounded splitting of the form $L(r)\cap\Delta$ or $\Delta\setminus U(r)$ with
+$r\in\Delta$. One bounded splitting is
+\[
+  S=\{113,121,122,131,211,212,311\}.
+\]
+The components $\{113\}$, $\{121,122,131\}$ and $\{211,212,311\}$ of $S$ are
+bounded below by $113$, $121$ and $211$ respectively. The components $\{123\}$,
+$\{213\}$ and $\{221,231,321,331\}$ of the complement are bounded above by $123$,
+$213$ and $331$ respectively.
+
 
 
 \end{document}

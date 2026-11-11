@@ -396,3 +396,87 @@ families (17 of 490). The right choice of `(D, U)` is still open.
 ### 2026-11-02: Write-up
 
 Appended section "Investigation and Next Steps" to `main.tex`. It contains the linear-extension theorem (with proof), the exact computations, Conjecture `conj:three`, Theorem `thm:three-cuts` (the target lemma implies 3 cuts, with proof), Conjecture `conj:target`, the strategies that failed, and next steps. Numbers corrected: 1,130 random posets with 8–13 points; 940 families for the strategy tests. `[5]x[5]` still running.
+
+### 2026-11-11: Review of `thm:2d-zig-zag`; higher dimensions; free sets
+
+**Request (John, comment at `main.tex:793`):** look at the new material (commit
+212cab2), especially `thm:2d-zig-zag`: (1) a version in 3+ dimensions? (2) 3 as a
+boundary; (3) connections to free sets and `thm:three-cuts`.
+
+**Review.** The lemmas and the theorem are correct apart from one small gap.
+- *Gap, `main.tex:788–790`:* for `i = 0` the point `(x_0, y_0)` is not in `Δ`, so
+  "`(x_0,y_0) ∈ D`, contrary to fact" doesn't give a contradiction. Fix: use
+  `q_0 = (x_0+1, y_0) ∈ Δ` instead. `J ⊆ U(q_0)` gives `q_0 ∈ D`, contradicting
+  `Δ ∩ D = ∅`. (For `i ≥ 1`, `(x_{2i}, y_{2i}) ∈ Δ` is fine.)
+- *Typos:* `main.tex:671` "interals"; `:674` missing full stop; `:679` "the set of
+  `$x\in…$`" should be `$p\in…$`; `:686` "So supppose `D∩U=∅`" (also it is a
+  conclusion, so "Hence `D∩U=∅`"); `:745` "agument"; `:775` "`$l>x_0$`" should be
+  "`$l>0$`".
+
+**(1) Higher dimensions.** The proof splits into a general part and one 2-D fact.
+The 2-D fact is that the staircase `L = ∪ L(p_i)` splits `Δ` into pieces, each
+bounded by a point of `Δ`. The argument only needs each piece of `L ∩ Δ` and of
+`Δ \ L` to be bounded *above or below* by a point of `Δ`. A member `J` inside a
+piece bounded below by `s ∈ Δ` gives `s ∈ D`, which is also a contradiction. So
+call a decreasing set `S` of a poset `P` a **bounded splitting** if every connected
+component of `S` and of `P \ S` has an upper or a lower bound in `P`. Then:
+
+*Theorem A (any finite poset, proof = John's).* Let `D_I = {p : U(p) contains a
+member}`, `U_I = {p : L(p) contains a member}`, `Δ = X \ (D_I ∪ U_I)`. If `I` is
+3-uncuttable and `Δ` (as a poset in its own right) has a bounded splitting, then
+some member lies inside `D_I` or inside `U_I`.
+
+*Conjecture (bounded splitting).* Every finite poset has a bounded splitting.
+- Evidence (`code/zigzag.py`, `code/relaxed_sample.py`, `code/splitting.py`): true
+  for *every* interval of `[3]×[3]`, `[4]×[4]`, `[2]×[3]×[3]`, `[2]×[2]×[4]` and
+  `[2]^4` (exhaustive); for 3,000 sampled intervals of `[3]^3`, 800 of `[3]×[3]×[4]`
+  and 1,000 of `[2]^3×[3]`; for 353 random connected posets with 12–18 elements;
+  and for every interval of 580 random posets with 10–13 elements. With Theorem A, the
+  exhaustive checks *prove* John's theorem for `[2]×[3]×[3]`, `[2]×[2]×[4]` and
+  `[2]^4` (computer-assisted).
+- John's *strict* version (each piece of `L ∩ Δ` bounded above and each piece of
+  `Δ \ L` bounded below) **fails in 3-D**. The interval
+  `{112,113,121,122,123,131,132,133,212,221,222}` in `[2]×[3]×[3]` has no such cut.
+  So the relaxation is needed.
+- Principal cuts (`L = L(r)` or `X \ U(r)` with `r ∈ Δ`) are not enough either.
+  `{113,121,122,123,131,211,212,213,221,231,311,321,331}` in `[3]^3` needs a
+  5-generator cut: `{113,121,122,131,211,212,311}`.
+
+**(2) Is 3 a boundary?** Theorem A uses exactly three cuts: `D_I`, `X \ U_I` and
+the splitting. Its proof never mentions dimension, which fits the data from
+2026-11-02 (good ⇒ 3-cuttable in every poset tested, any dimension). I agree this
+is more evidence that 3 is the right number, and that dimension isn't.
+
+**(3) Free sets.** `X \ U_I` is the union of all *free principal* downsets `L(p)`,
+and `D_I` is the union of all `L(p)` with `U(p)` not free. Both proofs have the
+same shape: two outer cuts kill everything meeting a free region, and one middle
+cut handles `Δ`.
+- *`thm:three-cuts`:* maximal free `D`, `U`; middle cut `D ∪ Min(X \ D)`. It needs
+  a hypothesis about members in `Δ` and a careful choice of `(D, U)`.
+- *`thm:2d-zig-zag` / Theorem A:* canonical `D_I`, `U_I`; middle cut a bounded
+  splitting. It needs `D_I`, `U_I` free. This is automatic in the contrapositive.
+
+What is missing to reach the conjecture is the link to **goodness**:
+- If `I_0 ⊆ U_I`, choose for each minimal `a` of `I_0` a member `I_a ⊆ L(a)`. Then
+  `{I_0} ∪ {I_a}` is 1-uncuttable, because a cut of `I_0` contains some such `a`
+  and hence all of `I_a`. And `I_a ∩ I_0 ⊆ {a}`. So 3-uncuttable ⇒ a 1-uncuttable
+  "star". Goodness forbids this only if the star is pairwise disjoint.
+- Goodness alone can't give freeness of `D_I`, `U_I`. `{r,p}, {p,p'}` with
+  `r < p < p'` is good but `{p,p'} ⊆ U_I`. So a proof of the conjecture has to use
+  3-uncuttability again to make the star disjoint. Strict versions
+  `U°_I = {p : some member ⊆ L(p) \ {p}}` (and `D°_I`) remove the overlaps with `I_0`.
+  Good ⇒ `D°_I ∩ U_I = ∅ = D_I ∩ U°_I`, because a point in both gives a disjoint
+  1-uncuttable pair. The remaining problem is overlaps among the `I_a` themselves.
+
+**Suggested next steps:** (a) prove the bounded-splitting conjecture, which is now
+a self-contained statement about finite posets; (b) make the star disjoint, e.g.
+by choosing `I_0` extremal, or by rerunning the argument with `D°_I`, `U°_I`.
+
+**Follow-up (John):** append Theorem A, the conjecture and the 3-D example to
+`main.tex`, in a new section. **Claude:** Added `\section{Bounded Splittings and
+Higher Dimensions}` at the end. It contains `def:bounded-splitting`,
+`thm:bounded-splitting-three` (Theorem A, with proof), a remark showing that
+`thm:2d-zig-zag` is its 2-D case (the remark uses `q_0` for `i = 0`, which avoids the
+gap noted above), `conj:bounded-splitting` with the computational evidence,
+`ex:no-strict-zig-zag` (`[2]×[3]×[3]`), and the `[3]^3` non-principal example. I
+deleted John's answered `% Claude` comment (Rule 3). Compiles cleanly (10 pages).
