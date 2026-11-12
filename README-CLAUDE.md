@@ -480,3 +480,22 @@ Higher Dimensions}` at the end. It contains `def:bounded-splitting`,
 gap noted above), `conj:bounded-splitting` with the computational evidence,
 `ex:no-strict-zig-zag` (`[2]×[3]×[3]`), and the `[3]^3` non-principal example. I
 deleted John's answered `% Claude` comment (Rule 3). Compiles cleanly (10 pages).
+
+### 2026-11-12: John's test case for `conj:bounded-splitting`
+
+**Request (comment at end of `main.tex`):** test the conjecture on
+`Δ = {113,114,122,123,124,131,132,133,134,141,142,143,213,222,223,231,232}`
+in `[2]×[4]×[4]`.
+
+**Claude** (`code/test_johns_example.py`). `Δ` is a connected interval with minimal
+elements `113, 122, 131` and maximal elements `134, 143, 223, 232`. It has 550
+decreasing subsets, and exactly **3** of them are bounded splittings. So the
+conjecture survives, but only just. The simplest is principal:
+`S = Δ \ U(122) = {113,114,131,141,213,231}`. Its components are
+`{113,114,213}` (least element `113`) and `{131,141,231}` (least element `131`).
+The complement `U(122) ∩ Δ` has least element `122`. Every component is bounded
+*below*. The other two splittings add `122`, or `122` and `222`, to `S`. John's
+strict version fails here too. A strict cut would be a bounded splitting, but all 3
+splittings have the component `{113,114,213}` of `S`, which has no upper bound.
+
+**Follow-up (John):** summarize at the end of the document and delete the comment. **Claude:** Done. Appended `ex:barely-splittable` and removed the comment. Compiles cleanly.

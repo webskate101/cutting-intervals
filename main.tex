@@ -921,7 +921,27 @@ bounded below by $113$, $121$ and $211$ respectively. The components $\{123\}$,
 $\{213\}$ and $\{221,231,321,331\}$ of the complement are bounded above by $123$,
 $213$ and $331$ respectively.
 
-
+\begin{example}\label{ex:barely-splittable}
+  In $X=[2]\times[4]\times[4]$ let
+  \[
+    \Delta=\{113,114,122,123,124,131,132,133,134,141,142,143,213,222,223,231,232\}.
+  \]
+  This is a connected interval with minimal elements $113,122,131$ and maximal
+  elements $134,143,223,232$. It satisfies Conjecture~\ref{conj:bounded-splitting},
+  but only barely. A computer search (\texttt{code/test\_johns\_example.py}) shows
+  that exactly $3$ of the $550$ decreasing subsets of $\Delta$ are bounded splittings.
+  The simplest is
+  \[
+    S=\Delta\setminus U(122)=\{113,114,131,141,213,231\}.
+  \]
+  Its components $\{113,114,213\}$ and $\{131,141,231\}$ have least elements $113$ and
+  $131$, and the complement $U(122)\cap\Delta$ is connected with least element $122$.
+  The other two bounded splittings are $S\cup\{122\}$ and $S\cup\{122,222\}$. All
+  three have $\{113,114,213\}$ as a component, and it has no upper bound in $\Delta$.
+  Since a cut of the kind constructed in the proof of
+  Theorem~\ref{thm:2d-zig-zag} would be a bounded splitting, no such cut exists for
+  $\Delta$.
+\end{example}
 
 \end{document}
 
