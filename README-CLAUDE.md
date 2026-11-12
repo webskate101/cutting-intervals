@@ -499,3 +499,54 @@ strict version fails here too. A strict cut would be a bounded splitting, but al
 splittings have the component `{113,114,213}` of `S`, which has no upper bound.
 
 **Follow-up (John):** summarize at the end of the document and delete the comment. **Claude:** Done. Appended `ex:barely-splittable` and removed the comment. Compiles cleanly.
+
+### 2026-11-12: Systematic search for larger variants — `conj:bounded-splitting` is FALSE
+
+**Request:** search systematically for larger variants of `ex:barely-splittable`.
+
+**Method** (`code/splitsearch.py`, `code/smallest.py`): every connected interval of
+a grid, enumerated as components of `A \ B` for downsets `B ⊆ A`, counting its
+bounded splittings. Counterexamples were re-verified by brute force over all
+subsets (`code/verify_counterexample.py`), independently of the search code.
+
+**Results.**
+- `[2]×[3]×[3]`: none (as before). `[2]×[3]×[4]`: 2 counterexamples among 15,012
+  intervals (16 points each). `[2]×[4]×[4]`: many among 150,652 intervals (smallest
+  16 points). `[3]^3`: 64 among 48,529 (smallest 15 points).
+- Example: `{112,113,122,123,131,132,133,141,142,143,212,213,221,222,231,232}` in
+  `[2]×[4]×[4]`, a connected interval with minima `112,131,221` and maxima
+  `143,213,232`. All 314 decreasing subsets fail.
+- Smallest found as an abstract poset (greedy deletion of points):
+  `Q = {112,113,131,132,141,143,212,213,221,222,231,232}` ⊆ `[2]×[4]×[4]`, 12 points.
+  It is connected; all 126 decreasing subsets fail. Hasse diagram: 112<113,132,212;
+  113<143,213; 131<132,141,231; 132<143,232; 141<143; 212<213,222; 221<222,231;
+  222<232; 231<232.
+- **Correction:** my earlier claim that 3,000 sampled intervals of `[3]^3` all had
+  bounded splittings was true, but the sample missed all 64 bad intervals. The
+  evidence paragraph after `conj:bounded-splitting` in `main.tex` is therefore
+  misleading.
+
+**Consequences.**
+- Theorem A (`thm:bounded-splitting-three`) is still true, but its hypothesis can
+  fail in 3-D, so it doesn't give `thm:2d-zig-zag` in higher dimensions in general.
+- The *conclusion* of `thm:2d-zig-zag` and `conj:three` are **not** refuted. Treating
+  each counterexample (16-, 15- and 12-point) as a poset in its own right, an exact
+  SAT search finds no collection needing ≥ 4 cuts with `D_I`, `U_I` free, and no
+  good collection needing ≥ 4 cuts.
+- In each counterexample the family of all unbounded connected intervals needs
+  exactly 2 cuts. Equivalently, there is a *bounded 2-splitting*, a chain
+  `L_1 ⊆ L_2` with every component of every layer bounded. That gives the 4-cut
+  analogue of Theorem A.
+
+**Follow-up (John):** approved the changes to existing text, and asked for `Δ` and
+`Q` to be described at the end. **Claude:** Done.
+- `conj:bounded-splitting` is now marked "[false, see Section …]". The paragraph
+  after it now says the conjecture fails. The misleading sampled-grid evidence is
+  replaced by the exhaustive cases plus a note that random sampling missed all 64
+  bad intervals of `[3]^3`. `ex:barely-splittable` now says "has a bounded
+  splitting" instead of "satisfies the conjecture".
+- New final section `sec:counterexamples` contains the search table,
+  `ex:no-bounded-splitting` (`Δ`, 16 points), `ex:Q` (12 points, with covering
+  relations), the SAT results showing the zig-zag conclusion and `conj:three` still
+  hold on these posets, and the 4-cut version via a bounded 2-splitting.
+Compiles cleanly (11 pages).

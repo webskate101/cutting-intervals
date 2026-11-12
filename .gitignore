@@ -6,3 +6,4 @@
 *.fls
 *.synctex.gz
 .venv/
+__pycache__/

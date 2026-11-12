@@ -863,26 +863,26 @@ Theorem~\ref{thm:2d-zig-zag}, it does not matter which bound each component has.
   Theorem~\ref{thm:bounded-splitting-three}.
 \end{remark}
 
-\begin{conjecture}\label{conj:bounded-splitting}
+\begin{conjecture}[false, see Section~\ref{sec:counterexamples}]\label{conj:bounded-splitting}
   Every finite partially ordered set has a bounded splitting.
 \end{conjecture}
 
-If Conjecture~\ref{conj:bounded-splitting} holds, then the conclusion of
-Theorem~\ref{thm:bounded-splitting-three} holds for every $3$-uncuttable collection of
-connected intervals in every finite partially ordered set. In particular, it holds in
-$[k_1]\times\cdots\times[k_d]$ for every $d$.
-
-The conjecture has been checked by computer, using the programs
-\texttt{zigzag.py}, \texttt{relaxed\_sample.py} and \texttt{splitting.py} in the
-directory \texttt{code/}:
+If Conjecture~\ref{conj:bounded-splitting} held, the conclusion of
+Theorem~\ref{thm:bounded-splitting-three} would hold for every $3$-uncuttable
+collection of connected intervals in every finite partially ordered set. However, the
+conjecture is false: Section~\ref{sec:counterexamples} gives counterexamples in
+$[2]\times[4]\times[4]$ and $[3]^3$. Bounded splittings do exist in many cases. This
+was checked by computer, using the programs \texttt{zigzag.py} and
+\texttt{splitting.py} in the directory \texttt{code/}:
 \begin{itemize}
   \item exhaustively, for every interval of $[3]\times[3]$, $[4]\times[4]$,
     $[2]\times[3]\times[3]$, $[2]\times[2]\times[4]$ and $[2]^4$;
-  \item for $3000$ randomly sampled intervals of $[3]^3$, $800$ of $[3]\times[3]\times[4]$
-    and $1000$ of $[2]^3\times[3]$;
   \item for every interval of $580$ random posets with $10$--$13$ elements, and for
     $353$ random connected posets with $12$--$18$ elements.
 \end{itemize}
+Random sampling is weak evidence here. A sample of $3000$ random intervals of $[3]^3$
+contained no counterexample, although $64$ of the $48529$ connected intervals of
+$[3]^3$ are counterexamples.
 Combined with Theorem~\ref{thm:bounded-splitting-three}, the exhaustive checks give a
 computer-assisted proof of the conclusion of Theorem~\ref{thm:2d-zig-zag} in
 $[2]\times[3]\times[3]$, $[2]\times[2]\times[4]$ and $[2]^4$.
@@ -927,7 +927,7 @@ $213$ and $331$ respectively.
     \Delta=\{113,114,122,123,124,131,132,133,134,141,142,143,213,222,223,231,232\}.
   \]
   This is a connected interval with minimal elements $113,122,131$ and maximal
-  elements $134,143,223,232$. It satisfies Conjecture~\ref{conj:bounded-splitting},
+  elements $134,143,223,232$. It has a bounded splitting,
   but only barely. A computer search (\texttt{code/test\_johns\_example.py}) shows
   that exactly $3$ of the $550$ decreasing subsets of $\Delta$ are bounded splittings.
   The simplest is
@@ -942,6 +942,81 @@ $213$ and $331$ respectively.
   Theorem~\ref{thm:2d-zig-zag} would be a bounded splitting, no such cut exists for
   $\Delta$.
 \end{example}
+
+\section{Counterexamples to Conjecture~\ref{conj:bounded-splitting}}\label{sec:counterexamples}
+
+Prompted by Example~\ref{ex:barely-splittable}, we searched for intervals with no bounded
+splitting, using the program \texttt{splitsearch.py} in the directory
+\texttt{code/}. It enumerates every connected interval of a product of chains, as the components of $A\setminus B$ for decreasing sets
+$B\subseteq A$, and tests each for a bounded splitting. The results were:
+\begin{center}
+  \begin{tabular}{lrr}
+    \hline
+    Poset & connected intervals & with no bounded splitting \\
+    \hline
+    $[2]\times[3]\times[3]$ & $2403$ & $0$ \\
+    $[2]\times[3]\times[4]$ & $15012$ & $2$ \\
+    $[3]\times[3]\times[3]$ & $48529$ & $64$ \\
+    $[2]\times[4]\times[4]$ & $150652$ & many \\
+    \hline
+  \end{tabular}
+\end{center}
+The smallest counterexamples have $16$ points in $[2]\times[3]\times[4]$ and in
+$[2]\times[4]\times[4]$, and $15$ points in $[3]^3$. Each counterexample quoted below was
+re-checked by a separate brute-force program, which tests every subset of the
+poset (\texttt{verify\_counterexample.py}).
+
+\begin{example}\label{ex:no-bounded-splitting}
+  In $[2]\times[4]\times[4]$ let
+  \[
+    \Delta=\{112,113,122,123,131,132,133,141,142,143,212,213,221,222,231,232\}.
+  \]
+  This is a connected interval with minimal elements $112,131,221$ and maximal elements
+  $143,213,232$. None of its $314$ decreasing subsets is a bounded splitting. It differs
+  from Example~\ref{ex:barely-splittable} by the removal of $114$, $124$, $134$ and
+  $223$ and the addition of $112$, $212$ and $221$.
+\end{example}
+
+The conjecture is about arbitrary finite posets, not only intervals in products of
+chains, so smaller counterexamples can be found by deleting points. Removing points
+of $\Delta$ one at a time, as long as the result stays connected and has no bounded
+splitting, leads to a $12$-point poset.
+
+\begin{example}\label{ex:Q}
+  Let $Q$ be the subposet
+  \[
+    Q=\{112,113,131,132,141,143,212,213,221,222,231,232\}
+  \]
+  of $[2]\times[4]\times[4]$, with the inherited order. Its covering relations are
+  \begin{gather*}
+    112<113,\ 112<132,\ 112<212,\ 113<143,\ 113<213,\ 131<132,\ 131<141,\ 131<231,\\
+    132<143,\ 132<232,\ 141<143,\ 212<213,\ 212<222,\ 221<222,\ 221<231,\ 222<232,\
+    231<232.
+  \end{gather*}
+  $Q$ is connected, with minimal elements $112,131,221$ and maximal elements
+  $143,213,232$. None of its $126$ decreasing subsets is a bounded splitting. Removing
+  any single point of $Q$ either disconnects it or produces a poset with a bounded
+  splitting. (Note that $Q$ is not an interval of $[2]\times[4]\times[4]$: for instance
+  $133$ lies between $113$ and $143$.)
+\end{example}
+
+These examples show that the method of Theorem~\ref{thm:bounded-splitting-three} does
+not extend Theorem~\ref{thm:2d-zig-zag} to all dimensions. They do not refute
+the conclusion of Theorem~\ref{thm:2d-zig-zag}, or Conjecture~\ref{conj:three}. Treating
+$\Delta$, $Q$ and the $15$-point counterexample in $[3]^3$ each as a partially ordered
+set in its own right, an exact SAT search (\texttt{code/test\_counterexample\_poset.py})
+finds no $3$-uncuttable collection of connected intervals with no member contained in
+$D_\I$ or $U_\I$, and no good collection that is $3$-uncuttable.
+
+The failure is also mild. In each of these posets, the collection of all connected
+intervals with neither an upper nor a lower bound is $2$-cuttable
+(\texttt{code/unbounded\_family.py}). By Theorem~\ref{thm:nested-cuts} there are then
+decreasing sets $L_1\subseteq L_2$ such that every component of $L_1$, of
+$L_2\setminus L_1$ and of the complement of $L_2$ is bounded above or below. The
+argument of Theorem~\ref{thm:bounded-splitting-three} with these two sets in place of
+one gives a $4$-cut version of that theorem. If $\I$ is $4$-uncuttable and
+$X\setminus(D_\I\cup U_\I)$ has such a pair of decreasing sets, then some member of
+$\I$ is contained in $D_\I$ or in $U_\I$. The examples above all have such a pair.
 
 \end{document}
 
